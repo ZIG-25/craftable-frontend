@@ -1,38 +1,17 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'Jersey';
+  src: url('res/fonts/Jersey25-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Caveat';
+  src: url('res/fonts/CaveatBrush.ttf') format('truetype');
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --primary: #25DAC5;
+  --dark-text: #1E0E62;
+  --light-text: rgba(21, 20, 57, 0.68);
+  --font-face: Caveat;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
