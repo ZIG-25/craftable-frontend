@@ -1,0 +1,64 @@
+.guest-tool-bar {
+    gap: 2rem;
+}
+
+.title-desktop {
+    display: flex;
+    flex-grow: 1;
+
+    font: var(--font-face);
+    font-size: 4rem;
+}
+
+.guest-tool-bar-actions-desktop {
+    display: flex;
+    flex-grow: 1;
+
+    justify-content: end;
+    gap: 1rem;
+}
+
+.title-phone {
+    display: none;
+}
+
+.drawer-toggle {
+    display: none;
+}
+
+.drawer-mobile {
+    display: none;
+}
+
+
+/* CSS For phones */
+@media screen and (max-width: 850px) {
+    .title-desktop {
+        display: none;
+    }
+
+    .guest-tool-bar-actions-desktop {
+        display: none;
+    }
+
+    .title-phone {
+        display: flex;
+        flex-grow: 1;
+
+        font: var(--font-face);
+        font-size: 4rem;
+    }
+
+    .drawer-toggle {
+        display: flex;
+    }
+
+    .drawer-mobile {
+        display: block;
+    }
+
+    .drawer-mobile .MuiDrawer-paper {
+        box-sizing: border-box;
+        width: 240px;
+    }
+}

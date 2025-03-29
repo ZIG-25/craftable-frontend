@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {WelcomePage} from "./welcome-page/WelcomePage";
+import {createTheme, responsiveFontSizes, ThemeProvider} from "@mui/material";
+
+let theme = createTheme({
+    palette: {
+        primary: {
+            main: '#25DAC5'
+        },
+    }
+});
+theme = responsiveFontSizes(theme);
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    return (
+        <ThemeProvider theme={theme}>
+
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<WelcomePage/>}/>
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
+    );
 }
 
 export default App;
