@@ -7,7 +7,7 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { DEFAULT_CONFIG } from '../shared/constants';
-import { PasswordField } from '../auth/AuthComponents';
+import { PasswordField } from '../components/AuthComponents';
 
 export function WelcomePage() {
   const validationSchema = useMemo(
