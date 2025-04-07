@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import './AuthPage.css';
 import { Formik } from 'formik';
 import { PasswordField } from '../components/AuthComponents';
@@ -13,6 +14,7 @@ import {
   } from '@mui/material';
 
 function RegisterPage () {
+    const navigate = useNavigate();
     const validationSchema = useMemo(
         () =>
         Yup.object().shape({
@@ -35,6 +37,8 @@ function RegisterPage () {
     repeatPassword: string;
     }) => {
     console.log(values);
+    localStorage.setItem('registerData', JSON.stringify(values)) // keeping register data from the 1st step
+    navigate('/register_customer_info');
     };
 
     return (
@@ -142,7 +146,8 @@ function RegisterPage () {
                         <Button
                         variant="outlined"
                         sx={{ borderRadius: '28px', flex: 1 }}
-                        onClick={() => alert('Registering as artist...')}>
+                        /* to be finished */
+                        onClick={() => alert('Registering as artist...')}> 
                             Continue as an Artist
                         </Button>
                     </Box>
