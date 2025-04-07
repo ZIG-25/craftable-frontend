@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { WelcomePage } from './welcome-page/WelcomePage';
 import { createTheme, responsiveFontSizes, ThemeProvider } from '@mui/material';
 import LoginPage from './auth-page/LoginPage';
+import RegisterPage from './auth-page/RegisterPage';
 
 let theme = createTheme({
   palette: {
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
