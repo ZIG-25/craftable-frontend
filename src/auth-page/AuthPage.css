@@ -1,4 +1,4 @@
-.login-page {
+.auth-page {
     background-image: url('https://plus.unsplash.com/premium_photo-1666286163385-abe05f0326c4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8b2NlYW4lMjB3YWxscGFwZXJ8ZW58MHx8MHx8fDA%3D');
     background-size: cover;
     background-position: center;
@@ -10,7 +10,7 @@
     align-items: start;
 }
 
-.login-form-container {
+.auth-form-container {
     box-shadow: 2.0px 4.0px 4.0px hsl(0deg 0% 0% / 0.44);
     padding: 1rem;
     padding-inline: 4rem;
@@ -22,7 +22,7 @@
     text-align: center;
 }
 
-.login-form {
+.auth-form {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,7 @@
 }
 
 
-.login-form-error {
+.auth-form-error {
     text-align: center;
     color: #e01e5a;
     word-wrap: break-word;
@@ -38,7 +38,7 @@
 
 @media screen and (max-width: 850px) {
 
-    .login-form-container {
+    .auth-form-container {
         padding: 1rem;
         max-width: 80%;
         min-width: 70%;

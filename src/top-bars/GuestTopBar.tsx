@@ -56,7 +56,7 @@ export function GuestTopBar() {
     {
       text: 'Sign Up',
       variant: 'contained',
-      action: () => console.log('Sign up!'),
+      action: () => navigate('/register'),
       sx: {
         fontSize: '1.1rem',
         color: DEFAULT_CONFIG.colors.white,

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import './LoginPage.css';
+import './AuthPage.css';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -36,8 +36,8 @@ function LoginPage() {
 
   return (
     <>
-      <div className="login-page">
-        <Box className="login-form-container">
+      <div className="auth-page">
+        <Box className="auth-form-container">
           <Typography
             variant="h2"
             component="div"
@@ -60,7 +60,7 @@ function LoginPage() {
           >
             {(formik: any) => (
               <form
-                className="login-form"
+                className="auth-form"
                 id="sign-form"
                 onSubmit={formik.handleSubmit}
               >
@@ -92,10 +92,10 @@ function LoginPage() {
                 {formik.dirty &&
                   !!formik.errors &&
                   ((formik.errors.username && (
-                    <p className="login-form-error">{formik.errors.username}</p>
+                    <p className="auth-form-error">{formik.errors.username}</p>
                   )) ||
                     (formik.errors.password && (
-                      <p className="login-form-error">
+                      <p className="auth-form-error">
                         {formik.errors.password}
                       </p>
                     )))}
@@ -119,7 +119,7 @@ function LoginPage() {
           </Formik>
           <Divider />
           <h3>
-            Don't have account? <a href={'/register'}>Sign up</a>
+            Don't have an account? <a href={'/register'}>Sign up</a>
           </h3>
         </Box>
       </div>
