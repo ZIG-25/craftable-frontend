@@ -31,14 +31,14 @@ function RegisterPage () {
     );
 
     const onFormSubmit = async (values: {
-    username: string;
-    email: string,
-    password: string;
-    repeatPassword: string;
+        username: string;
+        email: string,
+        password: string;
+        repeatPassword: string;
     }) => {
-    console.log(values);
-    localStorage.setItem('registerData', JSON.stringify(values)) // keeping register data from the 1st step
-    navigate('/register_customer_info');
+        console.log(values);
+        localStorage.setItem('registerData', JSON.stringify(values)) // keeping register data from the 1st step
+        navigate('/register-customer-info');
     };
 
     return (
@@ -135,17 +135,18 @@ function RegisterPage () {
                     {formik.touched.repeatPassword && formik.errors.repeatPassword && (
                         <p className="auth-form-error">{formik.errors.repeatPassword}</p>
                     )}
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: '1rem'}}>
+                    <Box sx={{ display: 'flex', gap: '1rem'}}>
                         <Button
                         variant="contained"
-                        sx={{ borderRadius: '28px', color: 'white'}}
+                        sx={{ borderRadius: '28px', color: 'white', flex: 1, minWidth: 0 }}
                         type="submit"
                         disabled={!(formik.isValid && formik.dirty)}>
                             Continue
                         </Button>
                         <Button
                         variant="outlined"
-                        sx={{ borderRadius: '28px', flex: 1 }}
+                        sx={{ borderRadius: '28px', flex: 1, minWidth: 0 }}
+                        disabled={!(formik.isValid && formik.dirty)}
                         /* to be finished */
                         onClick={() => alert('Registering as artist...')}> 
                             Continue as an Artist

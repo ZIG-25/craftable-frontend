@@ -24,7 +24,7 @@ function App() {
           <Route path="/" element={<WelcomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/register_customer_info" element={<CustomerInfoPage />}/>
+          <Route path="/register-customer-info" element={<CustomerInfoPage />}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
