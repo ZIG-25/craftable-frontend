@@ -8,7 +8,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import './AuthPage.css'; 
+import './AuthPage.css';
+import { CustomerData } from '../models/AuthModels';
 
 function CustomerInfoPage() {
     const navigate = useNavigate();
@@ -18,15 +19,11 @@ function CustomerInfoPage() {
         bio: Yup.string().max(500, 'Bio must be under 500 characters'),
     });
 
-    const onFormSubmit = async (values: {
-        name: string;
-        lastName: string;
-        bio: string;
-    }) => {
+    const onFormSubmit = async (customerData: CustomerData) => {
         const basicData = JSON.parse(localStorage.getItem('registerData') || '{}'); // joining data from the 1st sign-up form
         const fullData = {
             ...basicData,
-            ...values,
+            ...customerData,
         };
         localStorage.removeItem('registerData'); // deleting data from storage
         console.log('Full customer info:', fullData);
@@ -51,7 +48,7 @@ function CustomerInfoPage() {
             </Typography>
 
             <Formik
-                initialValues={{ name: '', lastName: '', bio: '' }}
+                initialValues={new CustomerData()}
                 validationSchema={validationSchema}
                 onSubmit={onFormSubmit}
             >

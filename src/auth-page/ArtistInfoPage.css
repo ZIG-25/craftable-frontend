@@ -1,0 +1,57 @@
+.auth-form-inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.personal-info-inputs {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    gap: 0.7rem;
+}
+
+.professional-info-inputs {
+    flex: 0 0 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.profession-header {
+    width: 100%;
+    text-align: start;
+}
+
+.profession-chips-box {
+    border: 1px solid lightgray;
+    border-radius: 28px;
+}
+
+
+.artist-auth-form-container {
+    box-shadow: 2.0px 4.0px 4.0px hsl(0deg 0% 0% / 0.44);
+    padding: 1rem;
+    padding-inline: 4rem;
+    margin-top: 5rem;
+    width: min(800px, 60%);
+
+    background: #eeeeee;
+    border-radius: 15px;
+    text-align: center;
+}
+
+@media screen and (max-width: 850px) {
+    .auth-form-inputs {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.3rem;
+
+    }
+}

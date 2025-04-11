@@ -49,7 +49,7 @@ function LoginPage() {
               fontSize: '3rem',
             }}
           >
-            Sign up
+            Sign in
           </Typography>
           <Formik
             initialValues={{ username: '', password: '' }}
