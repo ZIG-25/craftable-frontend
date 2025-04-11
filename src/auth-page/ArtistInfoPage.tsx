@@ -105,14 +105,19 @@ function ArtistInfoPage() {
                     }}
                   />
                   <TextField
-                    id="bio"
-                    name="bio"
-                    label="Bio"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    label="Phone number"
                     variant="outlined"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.bio && Boolean(formik.errors.bio)}
-                    helperText={formik.touched.bio && formik.errors.bio}
+                    error={
+                      formik.touched.phoneNumber &&
+                      Boolean(formik.errors.phoneNumber)
+                    }
+                    helperText={
+                      formik.touched.phoneNumber && formik.errors.phoneNumber
+                    }
                     slotProps={{
                       input: {
                         style: {
@@ -121,6 +126,7 @@ function ArtistInfoPage() {
                       },
                     }}
                   />
+
                 </Box>
                 <Divider orientation="vertical" flexItem></Divider>
                 <Box className="professional-info-inputs">
@@ -162,19 +168,14 @@ function ArtistInfoPage() {
                   </Box>
 
                   <TextField
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    label="Phone number"
+                    id="bio"
+                    name="bio"
+                    label="Bio"
                     variant="outlined"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={
-                      formik.touched.phoneNumber &&
-                      Boolean(formik.errors.phoneNumber)
-                    }
-                    helperText={
-                      formik.touched.phoneNumber && formik.errors.phoneNumber
-                    }
+                    error={formik.touched.bio && Boolean(formik.errors.bio)}
+                    helperText={formik.touched.bio && formik.errors.bio}
                     slotProps={{
                       input: {
                         style: {
