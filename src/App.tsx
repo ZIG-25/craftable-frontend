@@ -7,6 +7,7 @@ import LoginPage from './auth-page/LoginPage';
 import RegisterPage from './auth-page/RegisterPage';
 import CustomerInfoPage from './auth-page/CustomerInfoPage';
 import ArtistInfoPage from './auth-page/ArtistInfoPage';
+import ArtistDashboardPage from './artist-page/ArtistDashboardPage';
 
 let theme = createTheme({
   palette: {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/register-customer-info" element={<CustomerInfoPage />}/>
           <Route path="/register-artist-info" element={<ArtistInfoPage />}/>
+          <Route path="/artist-dashboard" element={<ArtistDashboardPage />}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
