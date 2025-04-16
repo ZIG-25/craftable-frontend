@@ -12,14 +12,17 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { PasswordField } from '../components/AuthComponents';
+import { LoginData } from '../models/AuthModels';
+import { useApi } from '../api/ApiProvider';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const apiClient = useApi();
 
   const validationSchema = useMemo(
     () =>
       Yup.object().shape({
-        username: Yup.string().email().required('Username field is required'),
+        email: Yup.string().email().required('Email field is required'),
         password: Yup.string()
           .required('Password field is required')
           .min(8, 'Password must be at least 8 characters'),
@@ -27,11 +30,17 @@ function LoginPage() {
     [],
   );
 
-  const onFormSubmit = async (values: {
-    username: string;
-    password: string;
-  }) => {
-    console.log(values);
+  const onFormSubmit = async (loginData: LoginData) => {
+    console.log(loginData);
+    const loginResult = await apiClient.login(loginData);
+
+    if (!loginResult.success) {
+      alert("Wrong username or password!");
+      return;
+    }
+
+    console.log(loginResult);
+    navigate(loginResult.destination);
   };
 
   return (
@@ -52,7 +61,7 @@ function LoginPage() {
             Sign in
           </Typography>
           <Formik
-            initialValues={{ username: '', password: '' }}
+            initialValues={new LoginData()}
             validationSchema={validationSchema}
             onSubmit={onFormSubmit}
             validateOnChange
@@ -65,11 +74,11 @@ function LoginPage() {
                 onSubmit={formik.handleSubmit}
               >
                 <TextField
-                  id="username"
+                  id="email"
                   variant="outlined"
                   color="primary"
-                  name="username"
-                  label="Username"
+                  name="email"
+                  label="E-mail"
                   slotProps={{
                     input: {
                       style: {
