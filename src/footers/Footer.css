@@ -1,0 +1,37 @@
+.footer {
+  background-color: #25dac5;
+  color: white;
+  padding: 1rem 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 1rem;
+}
+
+.footer-links a {
+  color: white;
+  font-weight: 500;
+  transition: opacity 0.3s;
+}
+
+.footer-links a:hover {
+  opacity: 0.5;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.icon-btn {
+  color: white;
+  transition: opacity 0.3s;
+}
+
+.icon-btn:hover {
+  opacity: 0.8;
+}
