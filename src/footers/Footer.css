@@ -36,3 +36,15 @@
 .icon-btn:hover {
   opacity: 0.8;
 }
+
+@media screen and (max-width: 850px) {
+  .footer-links {
+    justify-content: center;
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+
+  .footer-icons {
+    justify-content: center;
+  }
+}
