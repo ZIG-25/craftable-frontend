@@ -60,6 +60,7 @@ export function ArtistTopBar() {
           </Toolbar>
         </Container>
       </AppBar>
+      <Toolbar/>
     </>
   );
 }
