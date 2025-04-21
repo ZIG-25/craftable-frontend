@@ -33,7 +33,7 @@ function App() {
               element={<CustomerInfoPage />}
             />
             <Route path="/register-artist-info" element={<ArtistInfoPage />} />
-            <Route path="/artist-dashboard" element={<ArtistDashboardPage />}/>
+            <Route path="/creator-dashboard" element={<ArtistDashboardPage />}/>
           </Routes>
         </BrowserRouter>
       </ApiProvider>
