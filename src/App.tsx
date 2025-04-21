@@ -7,6 +7,7 @@ import LoginPage from './auth-page/LoginPage';
 import RegisterPage from './auth-page/RegisterPage';
 import CustomerInfoPage from './auth-page/CustomerInfoPage';
 import ArtistInfoPage from './auth-page/ArtistInfoPage';
+import ArtistDashboardPage from './artist-page/ArtistDashboardPage';
 import ApiProvider from './api/ApiProvider';
 
 let theme = createTheme({
@@ -32,6 +33,7 @@ function App() {
               element={<CustomerInfoPage />}
             />
             <Route path="/register-artist-info" element={<ArtistInfoPage />} />
+            <Route path="/artist-dashboard" element={<ArtistDashboardPage />}/>
           </Routes>
         </BrowserRouter>
       </ApiProvider>
