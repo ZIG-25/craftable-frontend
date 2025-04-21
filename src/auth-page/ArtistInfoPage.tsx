@@ -38,6 +38,7 @@ function ArtistInfoPage() {
 
     localStorage.removeItem('registerData');
     console.log('Full artistData info:', fullData);
+    navigate('/artist-dashboard');
   };
 
   return (

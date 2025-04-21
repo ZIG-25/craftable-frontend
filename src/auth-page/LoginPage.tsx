@@ -31,6 +31,7 @@ function LoginPage() {
     username: string;
     password: string;
   }) => {
+    // get user data from the database: if it's an artist, navigate to '/artist-dashboard'
     console.log(values);
   };
 
