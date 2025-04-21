@@ -31,10 +31,6 @@ function ArtistInfoPage() {
     console.log(artistData);
     const basicData = JSON.parse(localStorage.getItem('registerData') || '{}');
     const fullData = new CreatorRegistrationData(basicData, artistData);
-    // TODO: Not yet defined on backend side
-    // fullData.professions = fullData.professions
-    //   .filter((it: {professionName: string, active: boolean}) => it.active)
-    //   .map((it: {professionName: string, active: boolean}) => it.professionName);
 
     localStorage.removeItem('registerData');
     const registrationResult = await clientApi.registerCreator(fullData);

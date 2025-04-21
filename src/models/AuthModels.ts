@@ -22,16 +22,16 @@ export class AdditionalArtistData {
   lastName: string | undefined;
   phoneNumber: string | undefined;
   professions = [
-    {professionName: 'Mixed Media', active: false},
-    {professionName: 'Painters & illustrators', active: false},
-    {professionName: 'Ceramic', active: false},
-    {professionName: 'Fiber', active: false},
-    {professionName: 'Jewelery', active: false},
-    {professionName: 'Leather-worker', active: false},
-    {professionName: 'Soap & Candle', active: false},
-    {professionName: 'Woodworker', active: false},
-    {professionName: 'Doll & miniature', active: false},
-    {professionName: 'Other', active: false},
+    { professionName: 'Mixed Media', active: false },
+    { professionName: 'Painters & illustrators', active: false },
+    { professionName: 'Ceramic', active: false },
+    { professionName: 'Fiber', active: false },
+    { professionName: 'Jewelery', active: false },
+    { professionName: 'Leather-worker', active: false },
+    { professionName: 'Soap & Candle', active: false },
+    { professionName: 'Woodworker', active: false },
+    { professionName: 'Doll & miniature', active: false },
+    { professionName: 'Other', active: false },
   ];
 }
 
@@ -43,6 +43,7 @@ export class CreatorRegistrationData {
   surname: string | undefined;
   bio: string | undefined;
   phoneNumber: number | undefined; // This is how it is defined on backend side
+  professions: string[];
 
   constructor(base: BaseRegistrationData, addtional: AdditionalArtistData) {
     this.login = base.username;
@@ -51,10 +52,14 @@ export class CreatorRegistrationData {
     this.name = addtional.name;
     this.surname = addtional.lastName;
     this.bio = addtional.bio;
-    this.phoneNumber = parseInt(addtional.phoneNumber?? '')
+    this.phoneNumber = parseInt(addtional.phoneNumber ?? '');
+    this.professions = addtional.professions
+      .filter((it: { professionName: string; active: boolean }) => it.active)
+      .map(
+        (it: { professionName: string; active: boolean }) => it.professionName,
+      );
   }
 }
-
 
 export class CustomerRegistrationData {
   login: string | undefined;
