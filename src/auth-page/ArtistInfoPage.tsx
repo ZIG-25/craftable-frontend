@@ -12,10 +12,12 @@ import {
 } from '@mui/material';
 import './AuthPage.css';
 import './ArtistInfoPage.css';
-import { ArtistData } from '../models/AuthModels';
+import { AdditionalArtistData, CreatorRegistrationData } from '../models/AuthModels';
+import { useApi } from '../api/ApiProvider';
 
 function ArtistInfoPage() {
   const navigate = useNavigate();
+  const clientApi = useApi();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
@@ -25,20 +27,21 @@ function ArtistInfoPage() {
     professions: Yup.array(),
   });
 
-  const onFormSubmit = async (artistData: ArtistData) => {
+  const onFormSubmit = async (artistData: AdditionalArtistData) => {
     console.log(artistData);
     const basicData = JSON.parse(localStorage.getItem('registerData') || '{}');
-    const fullData = {
-      ...basicData,
-      ...artistData,
-    };
-    fullData.professions = fullData.professions
-      .filter((it: {professionName: string, active: boolean}) => it.active)
-      .map((it: {professionName: string, active: boolean}) => it.professionName);
+    const fullData = new CreatorRegistrationData(basicData, artistData);
 
     localStorage.removeItem('registerData');
-    console.log('Full artistData info:', fullData);
-    navigate('/artist-dashboard');
+    const registrationResult = await clientApi.registerCreator(fullData);
+
+    if (!registrationResult.success) {
+      alert(registrationResult.data);
+      navigate('/register');
+      return;
+    }
+
+    navigate('/login');
   };
 
   return (
@@ -59,7 +62,7 @@ function ArtistInfoPage() {
         </Typography>
 
         <Formik
-          initialValues={new ArtistData()}
+          initialValues={new AdditionalArtistData()}
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
         >
