@@ -1,0 +1,56 @@
+.customer-tool-bar {
+    gap: 2rem;
+}
+
+.desktop-customer-tool-bar {
+    display: flex;
+    flex-grow: 1;
+
+    justify-content: space-between;
+}
+
+.modules-right,
+.modules-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    gap: 1rem;
+}
+
+.modules-right {
+    justify-content: end;
+}
+
+.search-field {
+    border: 1px solid gray;
+    border-radius: 14px;
+    padding: 0.3rem;
+    width: 100%;
+}
+
+.mobile-customer-tool-bar {
+    display: none;
+}
+
+@media screen and (max-width: 850px) {
+
+    .desktop-customer-tool-bar,
+    .modules-right,
+    .modules-left {
+        display: none;
+    }
+
+    .mobile-customer-tool-bar {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .search-field {
+        width: 70%;
+        padding: 0.1rem;
+        margin: 8px;
+    }
+}

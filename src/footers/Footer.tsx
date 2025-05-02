@@ -13,7 +13,9 @@ import './Footer.css';
 
 export function Footer() {
   return (
-    <Box className="footer">
+    <Box
+      className="footer"
+    >
       <Container maxWidth="lg">
         {/* Grid is deprecated but it doesn't change the functionality */}
         <Grid
