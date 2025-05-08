@@ -15,6 +15,14 @@ interface ItemProps {
   state: string;
 }
 
+interface OfferProps {
+  imageSrc: string;
+  artistUsername: string;
+  title: string;
+  price: string;
+  onClick: () => void;
+}
+
 export function ItemComponent({
   imageSrc,
   customerUsername,
@@ -31,6 +39,44 @@ export function ItemComponent({
         <Typography className="item-price">{price}</Typography>
       </Box>
       <Typography className="item-state">{state}</Typography>
+    </Box>
+  );
+}
+
+export function OfferImageComponent({
+  imageSrc,
+  artistUsername,
+  title,
+  price,
+  onClick,
+}: OfferProps) {
+  return (
+    <Box className="offer-container">
+      <Box
+        component="img"
+        src={imageSrc}
+        alt={title}
+        onClick={onClick}
+        sx={{
+          width: 300,
+          height: 200,
+          border: '1px solid gray',
+          borderRadius: '14px',
+          objectFit: 'cover',
+          flexShrink: 0,
+        }}
+      />
+      <Typography component="div" variant="h6" sx={{ fontWeight: 900}}>
+        {artistUsername}
+      </Typography>
+      <Box className='additional-info'>
+        <Typography component="div" variant="h6">
+          {title}
+        </Typography>
+        <Typography component="div" variant="h6">
+          {price}
+        </Typography>
+      </Box>
     </Box>
   );
 }
