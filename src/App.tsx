@@ -8,6 +8,7 @@ import RegisterPage from './auth-page/RegisterPage';
 import CustomerInfoPage from './auth-page/CustomerInfoPage';
 import ArtistInfoPage from './auth-page/ArtistInfoPage';
 import ArtistDashboardPage from './artist-page/ArtistDashboardPage';
+import ProfileArtistPage from './artist-page/ProfileArtistPage';
 
 let theme = createTheme({
   palette: {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/register-customer-info" element={<CustomerInfoPage />}/>
           <Route path="/register-artist-info" element={<ArtistInfoPage />}/>
           <Route path="/artist-dashboard" element={<ArtistDashboardPage />}/>
+          <Route path="/profile-artist" element={<ProfileArtistPage />}/>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
