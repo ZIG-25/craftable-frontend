@@ -22,13 +22,6 @@ import {
   MenuItem,
 } from '@mui/material';
 
-// DONE add saving description
-// DONE add adding and removing profession, contact info
-// DONE fix footer
-// add adding items to portfolio
-// DONE add images to products
-// responsivity
-
 export default function ProfileArtistPage() {
   const ALL_PROFESSIONS = [
     'Painters & Illustrators', // const so upper case
@@ -70,6 +63,14 @@ export default function ProfileArtistPage() {
     setAnchorEl(null);
   };
 
+  const handleAddPortfolioItem = () => {
+    console.log("item added");
+  };
+
+  const handleAddStoreItem = () => {
+    console.log("item addded");
+  };
+
   const remainingOptions = ALL_PROFESSIONS.filter((p) => !selected.includes(p));
 
   return (
@@ -83,42 +84,153 @@ export default function ProfileArtistPage() {
         }}
       >
         <ArtistTopBar />
-
+  
         {/* main content */}
-        <Box sx={{ flex: 1, p: 4, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-          <Box sx={{ flex: 2, minWidth: '300px' }}>
-            <Typography variant="h3" fontWeight="bold">
-              Jan Kowalski
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              value={description}
-              //onChange={(e) => setDescription(e.target.value)}
-              sx={{ mt: 2, borderRadius: '12px' }}
-              InputProps={{
-                style: {
-                  border: '1px solid black',
-                  borderRadius: '12px',
-                  padding: '10px',
-                },
+        <Box
+          sx={{
+            flex: 1,
+            p: 4,
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 4,
+          }}
+        >
+          {/* left col */}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+              width: { xs: '100%', md: '35%' },
+              minWidth: '300px',
+              order: 1,
+            }}
+          >
+            <Box>
+              <Typography variant="h3" fontWeight="bold">
+                Jan Kowalski
+              </Typography>
+              <TextField
+                fullWidth
+                multiline
+                value={description}
+                //onChange={(e) => setDescription(e.target.value)}
+                sx={{ mt: 2, borderRadius: '12px' }}
+                InputProps={{
+                  style: {
+                    border: '1px solid black',
+                    borderRadius: '12px',
+                    padding: '10px',
+                  },
+                }}
+              />
+              <Button
+                variant="contained"
+                sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            </Box>
+            <Box
+              sx={{
+                border: '1px solid #ddd',
+                borderRadius: '12px',
+                p: 3,
+                height: 'fit-content',
+                boxShadow: 1,
               }}
-            />
-            <Button
-              variant="contained"
-              sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
-              onClick={handleSave}
             >
-              Save
-            </Button>
-
+              {/* professions */}
+              <Typography variant="h6" fontWeight="bold">
+                Profession
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                {selected.map((profession) => (
+                  <Chip
+                    key={profession}
+                    label={profession}
+                    onDelete={() => handleRemove(profession)}
+                    deleteIcon={<RemoveIcon />}
+                    sx={{ bgcolor: '#25dac5', color: 'white' }}
+                  />
+                ))}
+                <Chip
+                  label="Add +"
+                  icon={<AddIcon />}
+                  variant="outlined"
+                  onClick={handleAddClick}
+                />
+              </Box>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={() => setAnchorEl(null)}
+              >
+                {remainingOptions.map((profession) => (
+                  <MenuItem
+                    key={profession}
+                    onClick={() => handleMenuItemClick(profession)}
+                  >
+                    {profession}
+                  </MenuItem>
+                ))}
+              </Menu>
+  
+              {/* contact */}
+              <Typography variant="h6" mt={3} fontWeight="bold">
+                Contact info
+              </Typography>
+              <TextField
+                fullWidth
+                margin="normal"
+                value={emailAddress}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <EmailIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <TextField
+                fullWidth
+                margin="normal"
+                value={phoneNumber}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PhoneIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            </Box>
+          </Box>
+  
+          {/* right col */}
+          <Box
+            sx={{
+              width: { xs: '100%', md: '60%' },
+              minWidth: '300px',
+              order: 2,
+            }}
+          >
             {/* portfolio */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               My portfolio
             </Typography>
             <Grid container spacing={2} mt={1}>
               {[1, 2, 3].map((item) => (
-                <Grid item xs={6} md={3} key={item}>
+                <Grid item xs={6} md={6} key={item}>
                   <Card>
                     <CardMedia component="img" image={img} height="140" />
                     <CardContent>
@@ -130,8 +242,9 @@ export default function ProfileArtistPage() {
                   </Card>
                 </Grid>
               ))}
-              <Grid item xs={6} md={3}>
+              <Grid item xs={6} md={6}>
                 <Box
+                  onClick={handleAddPortfolioItem}
                   sx={{
                     height: 200,
                     border: '2px dashed #aaa',
@@ -146,14 +259,14 @@ export default function ProfileArtistPage() {
                 </Box>
               </Grid>
             </Grid>
-
+  
             {/* store */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               Store
             </Typography>
             <Grid container spacing={2} mt={1}>
-              {[1, 2, 3, 4].map((item) => (
-                <Grid item xs={6} md={3} key={item}>
+              {[1, 2, 3].map((item) => (
+                <Grid item xs={6} md={6} key={item}>
                   <Card>
                     <CardMedia component="img" image={img} height="140" />
                     <CardContent>
@@ -165,93 +278,23 @@ export default function ProfileArtistPage() {
                   </Card>
                 </Grid>
               ))}
-            </Grid>
-          </Box>
-
-          {/* sidebar */}
-          <Box
-            sx={{
-              flex: 1,
-              minWidth: '250px',
-              border: '1px solid #ddd',
-              borderRadius: '12px',
-              p: 3,
-              height: 'fit-content',
-              boxShadow: 1,
-            }}
-          >
-            {/* professions */}
-            <Typography variant="h6" fontWeight="bold">
-              Profession
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
-              {selected.map((profession) => (
-                <Chip
-                  key={profession}
-                  label={profession}
-                  onDelete={() => handleRemove(profession)}
-                  deleteIcon={<RemoveIcon />}
-                  sx={{ bgcolor: '#25dac5', color: 'white' }}
-                />
-              ))}
-              <Chip
-                label="Add +"
-                icon={<AddIcon />}
-                variant="outlined"
-                onClick={handleAddClick}
-              />
-            </Box>
-            <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={() => setAnchorEl(null)}
-            >
-              {remainingOptions.map((profession) => (
-                <MenuItem
-                  key={profession}
-                  onClick={() => handleMenuItemClick(profession)}
+              <Grid item xs={6} md={6}>
+                <Box
+                  onClick={handleAddStoreItem}
+                  sx={{
+                    height: 200,
+                    border: '2px dashed #aaa',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontSize: '2rem',
+                  }}
                 >
-                  {profession}
-                </MenuItem>
-              ))}
-            </Menu>
-
-            {/* contact */}
-            <Typography variant="h6" mt={3} fontWeight="bold">
-              Contact info
-            </Typography>
-            <TextField
-              fullWidth
-              margin="normal"
-              value={emailAddress}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <EmailIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              fullWidth
-              margin="normal"
-              value={phoneNumber}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PhoneIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
-              onClick={handleSave}
-            >
-              Save
-            </Button>
+                  +
+                </Box>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
         <Footer />
