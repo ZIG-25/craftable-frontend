@@ -20,7 +20,7 @@ import {
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { Footer } from '../footers/Footer';
 import { StoreItem } from '../models/Store';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const items: StoreItem[] = [
   {
@@ -35,10 +35,13 @@ const items: StoreItem[] = [
     artist: {
       name: 'First name',
       lastname: 'First lastname',
+      bio: '',
+      portfolioItems: [],
       login: '',
       email: '',
       storeItems: [],
-      professions: ["Jewellery", "Painting"],
+      phone: '',
+      professions: ['Jewellery', 'Painting'],
     },
   },
   {
@@ -52,11 +55,14 @@ const items: StoreItem[] = [
     ],
     artist: {
       name: 'Second name',
+      bio: '',
       lastname: 'Second lastname',
       login: '',
+      phone: '',
+      portfolioItems: [],
       email: '',
       storeItems: [],
-      professions: ["Photographer", "Ceramic"],
+      professions: ['Photographer', 'Ceramic'],
     },
   },
   {
@@ -70,11 +76,14 @@ const items: StoreItem[] = [
     ],
     artist: {
       name: 'Thirs name',
+      bio: '',
       lastname: 'Thirs lastname',
       login: '',
+      phone: '',
+      portfolioItems: [],
       email: '',
       storeItems: [],
-      professions: ["Ceramic", "Soap"],
+      professions: ['Ceramic', 'Soap'],
     },
   },
   {
@@ -91,8 +100,11 @@ const items: StoreItem[] = [
       lastname: 'Fifth lastname',
       login: '',
       email: '',
+      phone: '',
+      bio: '',
       storeItems: [],
-      professions: ["Candle"],
+      portfolioItems: [],
+      professions: ['Candle'],
     },
   },
   {
@@ -105,12 +117,15 @@ const items: StoreItem[] = [
       'https://picsum.photos/200/150?random=2',
     ],
     artist: {
+      portfolioItems: [],
       name: 'Sixth name',
       lastname: 'Sixth lastname',
+      phone: '',
       login: '',
+      bio: '',
       email: '',
       storeItems: [],
-      professions: ["Soap", "Candle"],
+      professions: ['Soap', 'Candle'],
     },
   },
   {
@@ -124,11 +139,14 @@ const items: StoreItem[] = [
     ],
     artist: {
       name: 'First name',
+      bio: '',
       lastname: 'First lastname',
+      portfolioItems: [],
+      phone: '',
       login: '',
       email: '',
       storeItems: [],
-      professions: ["Jewellery", "Painting"],
+      professions: ['Jewellery', 'Painting'],
     },
   },
   {
@@ -138,15 +156,22 @@ const items: StoreItem[] = [
     description: 'Second description',
     images: [
       'https://picsum.photos/200/150?random=3',
-      'https://picsum.photos/200/150?random=4',
+      'https://picsum.photos/200/150?random=15',
+      'https://picsum.photos/200/150?random=14',
+      'https://picsum.photos/200/150?random=10',
+      'https://picsum.photos/200/150?random=7',
+      'https://picsum.photos/200/150?random=6',
     ],
     artist: {
       name: 'Second name',
       lastname: 'Second lastname',
       login: '',
+      phone: '',
+      portfolioItems: [],
       email: '',
+      bio: '',
       storeItems: [],
-      professions: ["Photographer", "Ceramic"],
+      professions: ['Photographer', 'Ceramic'],
     },
   },
   {
@@ -160,11 +185,14 @@ const items: StoreItem[] = [
     ],
     artist: {
       name: 'Thirs name',
+      portfolioItems: [],
       lastname: 'Thirs lastname',
+      bio: '',
       login: '',
+      phone: '',
       email: '',
       storeItems: [],
-      professions: ["Ceramic", "Soap"],
+      professions: ['Ceramic', 'Soap'],
     },
   },
   {
@@ -179,10 +207,14 @@ const items: StoreItem[] = [
     artist: {
       name: 'Fifth name',
       lastname: 'Fifth lastname',
+      bio: '',
+      portfolioItems: [],
+
+      phone: '',
       login: '',
       email: '',
       storeItems: [],
-      professions: ["Candle"],
+      professions: ['Candle'],
     },
   },
   {
@@ -197,18 +229,25 @@ const items: StoreItem[] = [
     artist: {
       name: 'Sixth name',
       lastname: 'Sixth lastname',
+      bio: '',
+      phone: '',
       login: '',
       email: '',
       storeItems: [],
-      professions: ["Soap", "Candle"],
+      portfolioItems: [],
+      professions: ['Soap', 'Candle'],
     },
   },
-
 ];
 
 const ItemCard = ({ item }: { item: StoreItem }) => {
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate('/store-item', { state: { item: item } });
+  };
+
   return (
-    <Card sx={{ display: 'flex', mb: 2 }}>
+    <Card sx={{ display: 'flex', mb: 2 }} onClick={onClick}>
       <CardMedia
         component="img"
         sx={{ width: 100, height: 100, objectFit: 'cover' }}
@@ -229,11 +268,14 @@ const ItemCard = ({ item }: { item: StoreItem }) => {
 };
 
 interface FiltersProps {
-  onFilterChange: (filters: { priceRange: number[]; itemTypes: string[] }) => void;
+  onFilterChange: (filters: {
+    priceRange: number[];
+    itemTypes: string[];
+  }) => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
-  const maxPrice = Math.max(...items.map(it => it.price ? it.price : 0));
+  const maxPrice = Math.max(...items.map((it) => (it.price ? it.price : 0)));
   const [priceRange, setPriceRange] = useState<number[]>([0, maxPrice]);
   const [minPriceInput, setMinPriceInput] = useState<string>('0');
   const [maxPriceInput, setMaxPriceInput] = useState<string>(`${maxPrice}`);
@@ -247,7 +289,9 @@ const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
     onFilterChange({ priceRange: newRange, itemTypes });
   };
 
-  const handleMinPriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMinPriceInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const value = event.target.value;
     setMinPriceInput(value);
     const numValue = parseFloat(value);
@@ -258,7 +302,9 @@ const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
     }
   };
 
-  const handleMaxPriceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMaxPriceInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const value = event.target.value;
     setMaxPriceInput(value);
     const numValue = parseFloat(value);
@@ -275,7 +321,9 @@ const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
     onFilterChange({ priceRange, itemTypes: newTypes });
   };
 
-  let categories = Array.from(new Set(items.map((item) => item.artist?.professions ?? []).flat()));
+  let categories = Array.from(
+    new Set(items.map((item) => item.artist?.professions ?? []).flat()),
+  );
 
   return (
     <Box sx={{ p: 2 }}>
@@ -342,9 +390,10 @@ const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
 };
 
 const Store = () => {
-  const maxPrice = Math.max(...items.map(it => it.price ? it.price : 0));
+  const maxPrice = Math.max(...items.map((it) => (it.price ? it.price : 0)));
   const location = useLocation();
-  const initialSearchQuery = (location.state as { searchQuery?: string } | null)?.searchQuery ?? '';
+  const initialSearchQuery =
+    (location.state as { searchQuery?: string } | null)?.searchQuery ?? '';
   const [filters, setFilters] = useState<{
     priceRange: number[];
     itemTypes: string[];
@@ -355,14 +404,15 @@ const Store = () => {
   const [searchQuery, setSearchQuery] = useState<string>(initialSearchQuery);
 
   useEffect(() => {
-    const newSearchQuery = (location.state as { searchQuery?: string } | null)?.searchQuery ?? '';
+    const newSearchQuery =
+      (location.state as { searchQuery?: string } | null)?.searchQuery ?? '';
     setSearchQuery(newSearchQuery);
   }, [location.state]);
 
   const filteredItems = items.filter((item) => {
     const inPriceRange = item.price
       ? item.price >= filters.priceRange[0] &&
-      item.price <= filters.priceRange[1]
+        item.price <= filters.priceRange[1]
       : true;
     const matchesType =
       filters.itemTypes.length === 0 ||

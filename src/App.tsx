@@ -11,6 +11,9 @@ import ArtistDashboardPage from './artist-page/ArtistDashboardPage';
 import ApiProvider from './api/ApiProvider';
 import CustomerDashboard from './customer-pages/CustomerDashboard';
 import Store from './store-pages/OffersList';
+import StoreItemDetails from './store-pages/ItemStorePage';
+import ArtistList from './store-pages/ArtistList';
+import ArtistProfile from './artist-page/ArtistProfile';
 
 let theme = createTheme({
   palette: {
@@ -41,6 +44,9 @@ function App() {
             />
             <Route path="/customer-dashboard" element={<CustomerDashboard />} />
             <Route path="/store" element={<Store />} />
+            <Route path="/artists" element={<ArtistList />} />
+            <Route path="/store-item" element={<StoreItemDetails />} />
+            <Route path='/artist-profile' element={<ArtistProfile />} />
           </Routes>
         </BrowserRouter>
       </ApiProvider>
