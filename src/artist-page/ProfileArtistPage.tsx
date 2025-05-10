@@ -1,6 +1,7 @@
 import { Footer } from '../footers/Footer';
 import { ArtistTopBar } from '../top-bars/ArtistTopBar';
 import React from 'react';
+import { useState, useEffect } from 'react';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddIcon from '@mui/icons-material/Add';
@@ -20,7 +21,7 @@ import {
 } from '@mui/material';
 
 // add saving description
-// add dodawanie profession i usuwanie tez
+// add adding and removing profession 
 // add saving contact info
 // DONE fix footer
 // add adding items to portfolio
@@ -29,6 +30,12 @@ import {
 // fix all indents
 
 export default function ProfileArtistPage() {
+  const [description, setDescription] = useState(''); // to be fetched later 
+  
+  const handleSave = () => {
+    console.log("Saved");
+  }
+
   return (
     <>
       <Box
@@ -45,6 +52,8 @@ export default function ProfileArtistPage() {
             <TextField
               fullWidth
               multiline
+              value={description}
+              //onChange={(e) => setDescription(e.target.value)}
               defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor..."
               sx={{ mt: 2, borderRadius: '12px' }}
               InputProps={{
@@ -58,6 +67,7 @@ export default function ProfileArtistPage() {
             <Button
               variant="contained"
               sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
+              onClick={handleSave}
             >
               Save
             </Button>
