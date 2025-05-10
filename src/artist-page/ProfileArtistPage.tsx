@@ -6,40 +6,81 @@ import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddIcon from '@mui/icons-material/Add';
 import img from '../res/images/img_placeholder.jpg';
+import RemoveIcon from '@mui/icons-material/Remove';
 import {
   Box,
   Typography,
   TextField,
   Button,
-  IconButton,
   Chip,
   Grid,
   Card,
   CardMedia,
   CardContent,
   InputAdornment,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 
-// add saving description
-// add adding and removing profession 
-// add saving contact info
+// DONE add saving description
+// DONE add adding and removing profession, contact info
 // DONE fix footer
 // add adding items to portfolio
 // DONE add images to products
 // responsivity
-// fix all indents
 
 export default function ProfileArtistPage() {
-  const [description, setDescription] = useState(''); // to be fetched later 
-  
+  const ALL_PROFESSIONS = [
+    'Painters & Illustrators', // const so upper case
+    'Ceramic artists',
+    'Fiber artists',
+    'Jewelery makers',
+    'Leatherworkers',
+    'Soap & Candle artists',
+    'Woodworkers',
+    'Mixed media',
+    'Doll & Miniature artists',
+  ];
+  const [description, setDescription] = useState('Description'); // to be fetched later
+  const [emailAddress, setEmailAddress] = useState('jan.kowalski@gmail.com');
+  const [phoneNumber, setPhoneNumber] = useState('+48 000 000 000');
+  const [selected, setSelected] = useState<string[]>([
+    'Painters & Illustrators',
+    'Fiber artists',
+  ]); // mock for now
+
   const handleSave = () => {
-    console.log("Saved");
-  }
+    console.log('Saved');
+  };
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleRemove = (profession: string) => {
+    setSelected((prev) => prev.filter((p) => p !== profession));
+  };
+
+  const handleAddClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuItemClick = (profession: string) => {
+    if (!selected.includes(profession)) {
+      setSelected((prev) => [...prev, profession]);
+    }
+    setAnchorEl(null);
+  };
+
+  const remainingOptions = ALL_PROFESSIONS.filter((p) => !selected.includes(p));
 
   return (
     <>
       <Box
-        sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 5, }}
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: 5,
+        }}
       >
         <ArtistTopBar />
 
@@ -54,7 +95,6 @@ export default function ProfileArtistPage() {
               multiline
               value={description}
               //onChange={(e) => setDescription(e.target.value)}
-              defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla auctor..."
               sx={{ mt: 2, borderRadius: '12px' }}
               InputProps={{
                 style: {
@@ -72,6 +112,7 @@ export default function ProfileArtistPage() {
               Save
             </Button>
 
+            {/* portfolio */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               My portfolio
             </Typography>
@@ -79,11 +120,7 @@ export default function ProfileArtistPage() {
               {[1, 2, 3].map((item) => (
                 <Grid item xs={6} md={3} key={item}>
                   <Card>
-                    <CardMedia
-                      component="img"
-                      image={img}
-                      height="140"
-                    />
+                    <CardMedia component="img" image={img} height="140" />
                     <CardContent>
                       <Typography variant="body2">
                         Description {item} Lorem ipsum dolor sit amet,
@@ -110,6 +147,7 @@ export default function ProfileArtistPage() {
               </Grid>
             </Grid>
 
+            {/* store */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               Store
             </Typography>
@@ -117,11 +155,7 @@ export default function ProfileArtistPage() {
               {[1, 2, 3, 4].map((item) => (
                 <Grid item xs={6} md={3} key={item}>
                   <Card>
-                    <CardMedia
-                      component="img"
-                      image={img}
-                      height="140"
-                    />
+                    <CardMedia component="img" image={img} height="140" />
                     <CardContent>
                       <Typography variant="body2">
                         Description {item} Lorem ipsum dolor sit amet,
@@ -146,28 +180,50 @@ export default function ProfileArtistPage() {
               boxShadow: 1,
             }}
           >
+            {/* professions */}
             <Typography variant="h6" fontWeight="bold">
               Profession
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+              {selected.map((profession) => (
+                <Chip
+                  key={profession}
+                  label={profession}
+                  onDelete={() => handleRemove(profession)}
+                  deleteIcon={<RemoveIcon />}
+                  sx={{ bgcolor: '#25dac5', color: 'white' }}
+                />
+              ))}
               <Chip
-                label="Painters & Illustrators"
-                sx={{ bgcolor: '#25dac5', color: 'white' }}
+                label="Add +"
+                icon={<AddIcon />}
+                variant="outlined"
+                onClick={handleAddClick}
               />
-              <Chip
-                label="Fiber artist"
-                sx={{ bgcolor: '#25dac5', color: 'white' }}
-              />
-              <Chip label="Add +" icon={<AddIcon />} variant="outlined" />
             </Box>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={() => setAnchorEl(null)}
+            >
+              {remainingOptions.map((profession) => (
+                <MenuItem
+                  key={profession}
+                  onClick={() => handleMenuItemClick(profession)}
+                >
+                  {profession}
+                </MenuItem>
+              ))}
+            </Menu>
 
+            {/* contact */}
             <Typography variant="h6" mt={3} fontWeight="bold">
               Contact info
             </Typography>
             <TextField
               fullWidth
               margin="normal"
-              defaultValue="jan.kowalski@gmail.com"
+              value={emailAddress}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -179,7 +235,7 @@ export default function ProfileArtistPage() {
             <TextField
               fullWidth
               margin="normal"
-              defaultValue="+48 000 000 000"
+              value={phoneNumber}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -192,6 +248,7 @@ export default function ProfileArtistPage() {
               variant="contained"
               fullWidth
               sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
+              onClick={handleSave}
             >
               Save
             </Button>
