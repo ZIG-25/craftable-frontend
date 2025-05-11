@@ -21,6 +21,25 @@
   flex-grow: 1;
 }
 
+.offer-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+
+  padding: 5px;
+}
+
+.additional-info {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  padding-right: 18px;
+
+  justify-content: space-between;
+
+}
+
 .item-user {
   font-weight: 500;
   color: #888;
@@ -44,3 +63,5 @@
   padding-left: 2rem;
   color: #25dac5;
 }
+
+

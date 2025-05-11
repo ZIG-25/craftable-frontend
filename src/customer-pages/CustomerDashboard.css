@@ -1,0 +1,17 @@
+.section-header {
+    font: var(--font-face);
+    font-size: 4rem;
+}
+
+.customer-dashboard {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+    justify-content: start;
+}
+
+@media screen and (max-width: 850px) {
+    .customer-dashboard {
+        margin: 8px;
+    }
+}
