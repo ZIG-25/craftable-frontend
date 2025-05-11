@@ -38,7 +38,7 @@ export function ArtistTopBar() {
     },
     {
       icon: <AccountCircleIcon sx={{ fontSize: '2rem' }} />,
-      action: () => console.log('My profile'),
+      action: () => navigate("/profile-artist"),
     },
   ];
 
