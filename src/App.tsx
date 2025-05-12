@@ -47,7 +47,7 @@ function App() {
             <Route path="/store" element={<Store />} />
             <Route path="/artists" element={<ArtistList />} />
             <Route path="/store-item" element={<StoreItemDetails />} />
-            <Route path='/artist-profile' element={<ArtistProfileByCustomer />} />
+            <Route path='/artist-profile-details' element={<ArtistProfileByCustomer />} />
             <Route path="/profile-artist" element={<ProfileArtistPage />}/>
           </Routes>
         </BrowserRouter>

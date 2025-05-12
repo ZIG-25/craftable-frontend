@@ -227,6 +227,7 @@ const ArtistList = () => {
                 filteredArtists.map((artist) => (
                   <Card
                     key={artist.login}
+                    onClick={() => console.log(artist)}
                     sx={{
                       mb: 2,
                       borderRadius: 2,
