@@ -116,17 +116,6 @@ const mockArtists: Artist[] = [
   },
 ];
 
-// All possible professions for filter
-const allProfessions = [
-  'Painter',
-  'Sculptor',
-  'Photographer',
-  'Digital Artist',
-  'Illustrator',
-  'Animator',
-  'Ceramist',
-];
-
 const ArtistList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProfessions, setSelectedProfessions] = useState<string[]>([]);
@@ -140,6 +129,10 @@ const ArtistList = () => {
   const handleProfessionChange = (event: SelectChangeEvent<string[]>) => {
     setSelectedProfessions(event.target.value as string[]);
   };
+
+  const allProfessions = Array.from(
+    new Set(mockArtists.map((it) => it.professions).flat()),
+  );
 
   // Filter artists based on search and professions
   const filteredArtists = useMemo(() => {

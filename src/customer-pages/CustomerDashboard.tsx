@@ -292,7 +292,7 @@ function CustomerDashboard() {
                   transform: 'scale(0.95)',
                 },
               }}
-              onClick={() => console.log('Show more popular artists')}
+              onClick={() => navigate('/artists')}
             >
               Show More
             </Button>

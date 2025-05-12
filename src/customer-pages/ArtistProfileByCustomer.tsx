@@ -17,7 +17,7 @@ import { StoreItem } from '../models/Store';
 import { Footer } from '../footers/Footer';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 
-const ArtistProfile = () => {
+const ArtistProfileByCustomer = () => {
   const [artist, setArtist] = useState<Artist | null>(null);
   const portfolioRef = useRef<HTMLDivElement>(null);
   const storeRef = useRef<HTMLDivElement>(null);
@@ -418,4 +418,4 @@ const ArtistProfile = () => {
   );
 };
 
-export default ArtistProfile;
+export default ArtistProfileByCustomer;
