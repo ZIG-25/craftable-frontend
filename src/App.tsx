@@ -14,6 +14,7 @@ import Store from './store-pages/OffersList';
 import StoreItemDetails from './store-pages/ItemStorePage';
 import ArtistList from './store-pages/ArtistList';
 import ArtistProfileByCustomer from './customer-pages/ArtistProfileByCustomer';
+import ProfileArtistPage from './artist-page/ProfileArtistPage';
 
 let theme = createTheme({
   palette: {
@@ -47,6 +48,7 @@ function App() {
             <Route path="/artists" element={<ArtistList />} />
             <Route path="/store-item" element={<StoreItemDetails />} />
             <Route path='/artist-profile' element={<ArtistProfileByCustomer />} />
+            <Route path="/profile-artist" element={<ProfileArtistPage />}/>
           </Routes>
         </BrowserRouter>
       </ApiProvider>
