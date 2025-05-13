@@ -1,17 +1,4 @@
-.section-header {
-    font: var(--font-face);
-    font-size: 4rem;
-}
-
-.customer-dashboard {
-    display: flex;
-    flex-direction: column;
-    margin: 2rem;
-    justify-content: start;
-}
-
-@media screen and (max-width: 850px) {
-    .customer-dashboard {
-        margin: 8px;
-    }
+/* Custom styles for fine-tuned control */
+.offer-container img:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }

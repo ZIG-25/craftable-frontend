@@ -22,6 +22,7 @@ import Person2Icon from '@mui/icons-material/Person2';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { ChangeEvent, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
 function CustomerTopBar() {
   // Nawigation Drawer
@@ -29,6 +30,8 @@ function CustomerTopBar() {
   const toggleDrawer = () => {
     setDrawerOpened(!drawerOpened);
   };
+
+  const navigate = useNavigate();
 
   // User actions, such as logout, profile and so on.
   const actions = [
@@ -62,6 +65,8 @@ function CustomerTopBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const handleSearch = () => {
     console.log('Search query:', searchQuery);
+    navigate('/store', {state: { searchQuery: searchQuery }})
+    setSearchQuery('')
   };
 
   return (
