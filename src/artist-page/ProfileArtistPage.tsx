@@ -1,7 +1,6 @@
 import { Footer } from '../footers/Footer';
 import { ArtistTopBar } from '../top-bars/ArtistTopBar';
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddIcon from '@mui/icons-material/Add';
@@ -20,12 +19,16 @@ import {
   InputAdornment,
   Menu,
   MenuItem,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export default function ProfileArtistPage() {
   const ALL_PROFESSIONS = [
-    'Painters & Illustrators', // const so upper case
+    'Painters & Illustrators',
     'Ceramic artists',
     'Fiber artists',
     'Jewelery makers',
@@ -35,20 +38,40 @@ export default function ProfileArtistPage() {
     'Mixed media',
     'Doll & Miniature artists',
   ];
-  const [description, setDescription] = useState('Description'); // to be fetched later
-  const [emailAddress, setEmailAddress] = useState('jan.kowalski@gmail.com');
-  const [phoneNumber, setPhoneNumber] = useState('+48 000 000 000');
+
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>([
     'Painters & Illustrators',
     'Fiber artists',
-  ]); // mock for now
-
-  const handleSave = () => {
-    console.log('Saved');
-  };
-
+  ]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  // regex expression for validating phone number
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+  const formik = useFormik({
+    initialValues: {
+      description: 'Description',
+      emailAddress: 'jan.kowalski@gmail.com',
+      phoneNumber: '+48 000 000 000',
+    },
+    validationSchema: Yup.object({
+      description: Yup.string().required('Description is required'),
+      emailAddress: Yup.string()
+        .email('Invalid email')
+        .required('Email is required'),
+      phoneNumber: Yup.string()
+        .matches(phoneRegExp, 'Phone number is not valid')
+        .required(),
+    }),
+    onSubmit: (values) => {
+      console.log('Saved', values);
+      setAlertMessage('Changes saved successfully!');
+      setAlertOpen(true);
+    },
+  });
 
   const handleRemove = (profession: string) => {
     setSelected((prev) => prev.filter((p) => p !== profession));
@@ -87,7 +110,6 @@ export default function ProfileArtistPage() {
       >
         <ArtistTopBar />
 
-        {/* main content */}
         <Box
           sx={{
             flex: 1,
@@ -97,7 +119,6 @@ export default function ProfileArtistPage() {
             gap: 4,
           }}
         >
-          {/* left col */}
           <Box
             sx={{
               display: 'flex',
@@ -108,15 +129,23 @@ export default function ProfileArtistPage() {
               order: 1,
             }}
           >
-            <Box>
+            <Box component="form" onSubmit={formik.handleSubmit}>
               <Typography variant="h3" fontWeight="bold">
                 Jan Kowalski
               </Typography>
               <TextField
                 fullWidth
                 multiline
-                value={description}
-                //onChange={(e) => setDescription(e.target.value)}
+                name="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.description &&
+                  Boolean(formik.errors.description)
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                }
                 sx={{ mt: 2, borderRadius: '12px' }}
                 InputProps={{
                   style: {
@@ -129,7 +158,7 @@ export default function ProfileArtistPage() {
               <Button
                 variant="contained"
                 sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
-                onClick={handleSave}
+                type="submit"
               >
                 Save
               </Button>
@@ -143,7 +172,6 @@ export default function ProfileArtistPage() {
                 boxShadow: 1,
               }}
             >
-              {/* professions */}
               <Typography variant="h6" fontWeight="bold">
                 Profession
               </Typography>
@@ -179,14 +207,22 @@ export default function ProfileArtistPage() {
                 ))}
               </Menu>
 
-              {/* contact */}
               <Typography variant="h6" mt={3} fontWeight="bold">
                 Contact info
               </Typography>
               <TextField
                 fullWidth
                 margin="normal"
-                value={emailAddress}
+                name="emailAddress"
+                value={formik.values.emailAddress}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.emailAddress &&
+                  Boolean(formik.errors.emailAddress)
+                }
+                helperText={
+                  formik.touched.emailAddress && formik.errors.emailAddress
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -198,7 +234,16 @@ export default function ProfileArtistPage() {
               <TextField
                 fullWidth
                 margin="normal"
-                value={phoneNumber}
+                name="phoneNumber"
+                value={formik.values.phoneNumber}
+                onChange={formik.handleChange}
+                error={
+                  formik.touched.phoneNumber &&
+                  Boolean(formik.errors.phoneNumber)
+                }
+                helperText={
+                  formik.touched.phoneNumber && formik.errors.phoneNumber
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -211,14 +256,13 @@ export default function ProfileArtistPage() {
                 variant="contained"
                 fullWidth
                 sx={{ mt: 2, bgcolor: '#25dac5', borderRadius: '20px' }}
-                onClick={handleSave}
+                onClick={() => formik.handleSubmit()}
               >
                 Save
               </Button>
             </Box>
           </Box>
 
-          {/* right col */}
           <Box
             sx={{
               width: { xs: '100%', md: '60%' },
@@ -226,7 +270,6 @@ export default function ProfileArtistPage() {
               order: 2,
             }}
           >
-            {/* portfolio */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               My portfolio
             </Typography>
@@ -263,7 +306,6 @@ export default function ProfileArtistPage() {
               </Grid>
             </Grid>
 
-            {/* store */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               Store
             </Typography>
@@ -271,7 +313,6 @@ export default function ProfileArtistPage() {
               container
               spacing={2}
               mt={1}
-              onClick={() => navigate('/store-artist')}
             >
               {[1, 2, 3].map((item) => (
                 <Grid item xs={6} md={6} key={item}>
@@ -307,6 +348,20 @@ export default function ProfileArtistPage() {
           </Box>
         </Box>
         <Footer />
+
+        <Snackbar
+          open={alertOpen}
+          autoHideDuration={4000}
+          onClose={() => setAlertOpen(false)}
+        >
+          <Alert
+            severity="success"
+            onClose={() => setAlertOpen(false)}
+            sx={{ width: '100%' }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
       </Box>
     </>
   );
