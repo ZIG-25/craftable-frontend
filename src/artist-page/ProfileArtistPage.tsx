@@ -21,6 +21,7 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProfileArtistPage() {
   const ALL_PROFESSIONS = [
@@ -37,6 +38,7 @@ export default function ProfileArtistPage() {
   const [description, setDescription] = useState('Description'); // to be fetched later
   const [emailAddress, setEmailAddress] = useState('jan.kowalski@gmail.com');
   const [phoneNumber, setPhoneNumber] = useState('+48 000 000 000');
+  const navigate = useNavigate()
   const [selected, setSelected] = useState<string[]>([
     'Painters & Illustrators',
     'Fiber artists',
@@ -68,7 +70,7 @@ export default function ProfileArtistPage() {
   };
 
   const handleAddStoreItem = () => {
-    console.log("item addded");
+    console.log("item added");
   };
 
   const remainingOptions = ALL_PROFESSIONS.filter((p) => !selected.includes(p));
@@ -264,7 +266,7 @@ export default function ProfileArtistPage() {
             <Typography variant="h4" mt={4} fontWeight="bold">
               Store
             </Typography>
-            <Grid container spacing={2} mt={1}>
+            <Grid container spacing={2} mt={1} onClick={()=>navigate('/store-artist')}>
               {[1, 2, 3].map((item) => (
                 <Grid item xs={6} md={6} key={item}>
                   <Card>
