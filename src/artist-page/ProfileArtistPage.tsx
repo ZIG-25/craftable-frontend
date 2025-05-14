@@ -38,7 +38,7 @@ export default function ProfileArtistPage() {
   const [description, setDescription] = useState('Description'); // to be fetched later
   const [emailAddress, setEmailAddress] = useState('jan.kowalski@gmail.com');
   const [phoneNumber, setPhoneNumber] = useState('+48 000 000 000');
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string[]>([
     'Painters & Illustrators',
     'Fiber artists',
@@ -66,11 +66,11 @@ export default function ProfileArtistPage() {
   };
 
   const handleAddPortfolioItem = () => {
-    console.log("item added");
+    navigate('/add-portfolio-item');
   };
 
   const handleAddStoreItem = () => {
-    console.log("item added");
+    navigate('/add-store-item');
   };
 
   const remainingOptions = ALL_PROFESSIONS.filter((p) => !selected.includes(p));
@@ -86,7 +86,7 @@ export default function ProfileArtistPage() {
         }}
       >
         <ArtistTopBar />
-  
+
         {/* main content */}
         <Box
           sx={{
@@ -178,7 +178,7 @@ export default function ProfileArtistPage() {
                   </MenuItem>
                 ))}
               </Menu>
-  
+
               {/* contact */}
               <Typography variant="h6" mt={3} fontWeight="bold">
                 Contact info
@@ -217,7 +217,7 @@ export default function ProfileArtistPage() {
               </Button>
             </Box>
           </Box>
-  
+
           {/* right col */}
           <Box
             sx={{
@@ -255,18 +255,24 @@ export default function ProfileArtistPage() {
                     justifyContent: 'center',
                     alignItems: 'center',
                     fontSize: '2rem',
+                    cursor: 'pointer',
                   }}
                 >
                   +
                 </Box>
               </Grid>
             </Grid>
-  
+
             {/* store */}
             <Typography variant="h4" mt={4} fontWeight="bold">
               Store
             </Typography>
-            <Grid container spacing={2} mt={1} onClick={()=>navigate('/store-artist')}>
+            <Grid
+              container
+              spacing={2}
+              mt={1}
+              onClick={() => navigate('/store-artist')}
+            >
               {[1, 2, 3].map((item) => (
                 <Grid item xs={6} md={6} key={item}>
                   <Card>
@@ -291,6 +297,7 @@ export default function ProfileArtistPage() {
                     justifyContent: 'center',
                     alignItems: 'center',
                     fontSize: '2rem',
+                    cursor: 'pointer',
                   }}
                 >
                   +
