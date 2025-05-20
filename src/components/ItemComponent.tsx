@@ -23,6 +23,13 @@ interface OfferProps {
   onClick: () => void;
 }
 
+interface ArtistStoreItemProps {
+  imageSrc: string;
+  title: string;
+  price: string;
+  description: string;
+}
+
 export function ItemComponent({
   imageSrc,
   customerUsername,
@@ -66,16 +73,58 @@ export function OfferImageComponent({
           flexShrink: 0,
         }}
       />
-      <Typography component="div" variant="h6" sx={{ fontWeight: 900}}>
+      <Typography component="div" variant="h6" sx={{ fontWeight: 900 }}>
         {artistUsername}
       </Typography>
-      <Box className='additional-info'>
+      <Box className="additional-info">
         <Typography component="div" variant="h6">
           {title}
         </Typography>
         <Typography component="div" variant="h6">
           {price}
         </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+export function ArtistStoreItemComponent({
+  imageSrc,
+  title,
+  price,
+  description,
+}: ArtistStoreItemProps) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 4,
+        mb: 4,
+        alignItems: 'flex-start',
+      }}
+    >
+      <Box
+        component="img"
+        src={imageSrc}
+        alt={title}
+        sx={{
+          width: 150,
+          height: 150,
+          borderRadius: 2,
+          objectFit: 'cover',
+        }}
+      />
+
+      <Box sx={{ minWidth: 100 }}>
+        <Typography variant="subtitle1" fontWeight="bold">
+          {title}
+        </Typography>
+        <Typography variant="body2">{price}</Typography>
+      </Box>
+
+      <Box sx={{ flex: 1 }}>
+        <Typography variant="body2">{description}</Typography>
       </Box>
     </Box>
   );
