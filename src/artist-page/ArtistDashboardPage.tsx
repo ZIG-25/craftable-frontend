@@ -6,14 +6,79 @@ import { ItemComponent } from '../components/ItemComponent';
 import logoImg from '../res/images/img_placeholder.jpg'; // placeholder
 
 function ArtistDashboardPage() {
+  const pendingRequests = [
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user1',
+      title: 'Vase',
+      price: '199$',
+      state: 'Available',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user2',
+      title: 'Painting',
+      price: '299$',
+      state: 'Pending',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user3',
+      title: 'Sculpture',
+      price: '399$',
+      state: 'Reserved',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user4',
+      title: 'Lamp',
+      price: '149$',
+      state: 'Available',
+    },
+  ];
+
+  const ordersHistory = [
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user5',
+      title: 'Mug',
+      price: '49$',
+      state: 'Sold',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user6',
+      title: 'Bowl',
+      price: '89$',
+      state: 'Delivered',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user7',
+      title: 'Plate',
+      price: '59$',
+      state: 'Sold',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user8',
+      title: 'Poster',
+      price: '39$',
+      state: 'Delivered',
+    },
+    {
+      imageSrc: logoImg,
+      customerUsername: 'user9',
+      title: 'Notebook',
+      price: '19$',
+      state: 'Sold',
+    },
+  ];
+
   return (
     <>
       <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-        }}
+        sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
       >
         <ArtistTopBar />
         <h1 className="artist-name">Jan Kowalski</h1>
@@ -22,81 +87,21 @@ function ArtistDashboardPage() {
             padding: 4,
             display: 'flex',
             gap: 3,
-            flexDirection: {
-              xs: 'column', // stack containers on small screens
-              md: 'row', // row layout from 900px and up
-            },
+            flexDirection: { xs: 'column', md: 'row' },
           }}
         >
           <Box className="container">
             <h2>Pending requests</h2>
-            {/* Below: placeholder items, later to be mapped */}
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
+            {pendingRequests.map((item, index) => (
+              <ItemComponent key={index} {...item} />
+            ))}
           </Box>
+
           <Box className="container">
             <h2>Orders history</h2>
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
-            <ItemComponent
-              imageSrc={logoImg}
-              customerUsername="user1"
-              title="Vase"
-              price="199$"
-              state="Available"
-            />
+            {ordersHistory.map((item, index) => (
+              <ItemComponent key={index} {...item} />
+            ))}
           </Box>
         </Box>
       </Box>

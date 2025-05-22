@@ -15,6 +15,8 @@ import StoreItemDetails from './store-pages/ItemStorePage';
 import ArtistList from './store-pages/ArtistList';
 import ArtistProfileByCustomer from './customer-pages/ArtistProfileByCustomer';
 import ProfileArtistPage from './artist-page/ProfileArtistPage';
+import ArtistAddPortfolioItem from './artist-page/ArtistAddPortfolioItem';
+import ArtistAddStoreItem from './artist-page/ArtistAddStoreItem';
 import CustomerNewRequest from './request-pages/RequestNewCreationPage';
 
 let theme = createTheme({
@@ -50,6 +52,8 @@ function App() {
             <Route path="/store-item" element={<StoreItemDetails />} />
             <Route path='/artist-profile-details' element={<ArtistProfileByCustomer />} />
             <Route path="/profile-artist" element={<ProfileArtistPage />}/>
+            <Route path="/add-store-item" element={<ArtistAddStoreItem />}/>
+            <Route path="/add-portfolio-item" element={<ArtistAddPortfolioItem />}/>
             <Route path='/request-new-creation' element={<CustomerNewRequest/>}/>
           </Routes>
         </BrowserRouter>

@@ -16,12 +16,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 export function ArtistTopBar() {
   const navigate = useNavigate();
-  const [inboxEmpty, setInboxEmpty] = useState(true); // messages inbox
-
-  const toggleInboxIcon = () => {
-    // toggle state for now, later needed to check if there any messages available
-    setInboxEmpty(!inboxEmpty);
-  };
+  const [inboxEmpty, setInboxEmpty] = useState(true); // TODO: if any requests are available, change to false
 
   const actions: {
     icon: React.ReactElement;
@@ -34,11 +29,11 @@ export function ArtistTopBar() {
           sx={{ fontSize: '2rem', color: inboxEmpty ? '' : '#25DAC5' }}
         />
       ),
-      action: toggleInboxIcon, // later: navigate to '/messages'
+      action: () => navigate('/creator-dashboard'),
     },
     {
       icon: <AccountCircleIcon sx={{ fontSize: '2rem' }} />,
-      action: () => navigate("/profile-artist"),
+      action: () => navigate('/profile-artist'),
     },
   ];
 
@@ -60,7 +55,7 @@ export function ArtistTopBar() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Toolbar/>
+      <Toolbar />
     </>
   );
 }

@@ -173,7 +173,7 @@ function CustomerDashboard() {
                 title: e.imgAlt,
                 price: '98.289',
                 onClick: e.onClick,
-              })
+              }),
             )}
           />
         </Paper>
@@ -239,7 +239,7 @@ function CustomerDashboard() {
                 title: e.imgAlt,
                 price: '98.289',
                 onClick: e.onClick,
-              })
+              }),
             )}
           />
         </Paper>
