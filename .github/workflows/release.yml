@@ -5,11 +5,17 @@ on:
     branches:
       - master
   workflow_dispatch:
-
+    inputs:
+      api_url:
+        description: 'API URL to use for the build'
+        required: false
+        default: 'http://localhost:8080/api'
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      API_URL: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'http://localhost:8080/api' || inputs.api_url }}
 
     steps:
       - name: Checkout code
@@ -27,6 +33,7 @@ jobs:
         run: npm run build -- --max-warnings=0
         env:
           CI: false
+          API_URL: ${{ env.API_URL }}
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3

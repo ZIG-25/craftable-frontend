@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 export function WelcomePage() {
   const navigate = useNavigate();
   const apiClient = useApi();
+  console.warn(process.env.REACT_APP_API_URL);
   const validationSchema = useMemo(
     () =>
       Yup.object().shape({
