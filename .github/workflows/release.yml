@@ -15,7 +15,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      API_URL: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'http://localhost:8080/api' || inputs.api_url }}
+      REACT_APP_API_URL: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'http://localhost:8080/api' || inputs.api_url }}
 
     steps:
       - name: Checkout code
@@ -33,7 +33,7 @@ jobs:
         run: npm run build -- --max-warnings=0
         env:
           CI: false
-          API_URL: ${{ env.API_URL }}
+          REACT_APP_API_URL: ${{ env.REACT_APP_API_URL }}
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
