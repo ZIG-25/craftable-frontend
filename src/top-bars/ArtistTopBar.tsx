@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import './ArtistTopBar.css';
+import PaletteIcon from '@mui/icons-material/Palette';
 import {
   AppBar,
   Box,

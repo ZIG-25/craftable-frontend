@@ -29,10 +29,10 @@ const RequestForm: React.FC = () => {
     description: false,
   });
 
-  // Get current date in YYYY-MM-DD format for min attribute and validation
+  
   const today = new Date().toISOString().split('T')[0];
 
-  // Handle price input to allow only numbers and a single decimal point
+  
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
@@ -40,25 +40,25 @@ const RequestForm: React.FC = () => {
     }
   };
 
-  // Handle field touch
+  
   const handleTouch = (field: keyof typeof touched) => {
     setTouched((prev) => ({ ...prev, [field]: true }));
   };
 
-  // Validation checks
+  
   const isTitleEmpty = title.trim() === '';
   const isPriceEmpty = price.trim() === '';
   const isDeadlineEmpty = deadline === '';
   const isDescriptionEmpty = description.trim() === '';
   const isDeadlineInvalid = deadline !== '' && deadline < today;
 
-  // Show errors only if field is touched
+  
   const showTitleError = touched.title && isTitleEmpty;
   const showPriceError = touched.price && isPriceEmpty;
   const showDeadlineError = touched.deadline && (isDeadlineEmpty || isDeadlineInvalid);
   const showDescriptionError = touched.description && isDescriptionEmpty;
 
-  // Button disabled if any field is empty or date is invalid
+  
   const isFormInvalid = isTitleEmpty || isPriceEmpty || isDeadlineEmpty || isDescriptionEmpty || isDeadlineInvalid;
 
   return (
@@ -120,7 +120,7 @@ const RequestForm: React.FC = () => {
                   shrink: true,
                 }}
                 inputProps={{
-                  min: today, // Restrict to dates after today
+                  min: today, 
                 }}
                 error={showDeadlineError}
                 sx={{ '& .MuiOutlinedInput-root': { borderRadius: 3 } }}

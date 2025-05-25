@@ -20,9 +20,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import EmailIcon from '@mui/icons-material/Email';
 import Person2Icon from '@mui/icons-material/Person2';
 import LogoutIcon from '@mui/icons-material/Logout';
+
 import { ChangeEvent, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
+import PaletteIcon from '@mui/icons-material/Palette';
 
 function CustomerTopBar() {
   // Nawigation Drawer
@@ -36,10 +38,10 @@ function CustomerTopBar() {
   // User actions, such as logout, profile and so on.
   const actions = [
     {
-      icon: <EmailIcon sx={{ fontSize: '2.2rem' }} />,
+      icon: <PaletteIcon sx={{ fontSize: '2.2rem' }} />,
       label: 'notifications',
       action: () => {
-        console.log('notif');
+        navigate('/creation-request-list-customer');
       },
       sx: {},
     },
