@@ -17,6 +17,7 @@ import ArtistProfileByCustomer from './customer-pages/ArtistProfileByCustomer';
 import ProfileArtistPage from './artist-page/ProfileArtistPage';
 import ArtistAddPortfolioItem from './artist-page/ArtistAddPortfolioItem';
 import ArtistAddStoreItem from './artist-page/ArtistAddStoreItem';
+import CustomerProfile from './customer-pages/CustomerProfile';
 
 let theme = createTheme({
   palette: {
@@ -53,6 +54,7 @@ function App() {
             <Route path="/profile-artist" element={<ProfileArtistPage />}/>
             <Route path="/add-store-item" element={<ArtistAddStoreItem />}/>
             <Route path="/add-portfolio-item" element={<ArtistAddPortfolioItem />}/>
+            <Route path="/profile" element={<CustomerProfile />}/>
           </Routes>
         </BrowserRouter>
       </ApiProvider>

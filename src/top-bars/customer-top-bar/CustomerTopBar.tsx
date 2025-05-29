@@ -47,7 +47,7 @@ function CustomerTopBar() {
       icon: <Person2Icon sx={{ fontSize: '2.2rem' }} />,
       label: 'profile',
       action: () => {
-        console.log('profile');
+        navigate("/profile");
       },
       sx: {},
     },
