@@ -47,7 +47,7 @@ function CustomerTopBar() {
       icon: <Person2Icon sx={{ fontSize: '2.2rem' }} />,
       label: 'profile',
       action: () => {
-        navigate("/profile");
+        navigate('/profile');
       },
       sx: {},
     },
@@ -65,8 +65,8 @@ function CustomerTopBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const handleSearch = () => {
     console.log('Search query:', searchQuery);
-    navigate('/store', {state: { searchQuery: searchQuery }})
-    setSearchQuery('')
+    navigate('/store', { state: { searchQuery: searchQuery } });
+    setSearchQuery('');
   };
 
   return (
@@ -76,7 +76,11 @@ function CustomerTopBar() {
           <Toolbar variant="regular" className="customer-tool-bar">
             <Box className="desktop-customer-tool-bar">
               <Box className="modules-left">
-                <Diversity2Icon color="primary" fontSize="large" />
+                <Diversity2Icon
+                  color="primary"
+                  fontSize="large"
+                  onClick={() => navigate('/customer-dashboard')}
+                />
                 <InputBase
                   placeholder="Search…"
                   className="search-field"
@@ -84,11 +88,10 @@ function CustomerTopBar() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   endAdornment={
                     <IconButton onClick={handleSearch}>
-                      <SearchIcon sx={{ fontSize: '1.2rem' }}  />
+                      <SearchIcon sx={{ fontSize: '1.2rem' }} />
                     </IconButton>
                   }
                 />
-
               </Box>
               <Box className="modules-right">
                 {actions.map((action) => (
@@ -114,7 +117,7 @@ function CustomerTopBar() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 endAdornment={
                   <IconButton onClick={handleSearch}>
-                    <SearchIcon sx={{ fontSize: '1.2rem' }}  />
+                    <SearchIcon sx={{ fontSize: '1.2rem' }} />
                   </IconButton>
                 }
               />

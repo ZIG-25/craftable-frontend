@@ -11,7 +11,7 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Footer } from '../footers/Footer';
-import { ArtistTopBar } from '../top-bars/ArtistTopBar';
+import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 
 export default function CustomerProfile() {
   const [alertOpen, setAlertOpen] = React.useState(false);
@@ -38,10 +38,14 @@ export default function CustomerProfile() {
 
   return (
     <>
-      <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-        <ArtistTopBar />
+      <Box
+        sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
+        <CustomerTopBar />
 
-        <Box sx={{ flex: 1, p: "5rem", display: 'flex', justifyContent: 'center' }}>
+        <Box
+          sx={{ flex: 1, p: '5rem', display: 'flex', justifyContent: 'center' }}
+        >
           <Box
             component="form"
             onSubmit={formik.handleSubmit}
@@ -143,7 +147,7 @@ export default function CustomerProfile() {
                     sx={{
                       borderRadius: '24px',
                       textTransform: 'none',
-                      // not important yet to change the password 
+                      // not important yet to change the password
                     }}
                   >
                     Change password
