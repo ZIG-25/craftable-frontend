@@ -17,6 +17,7 @@ import ArtistProfileByCustomer from './customer-pages/ArtistProfileByCustomer';
 import ProfileArtistPage from './artist-page/ProfileArtistPage';
 import ArtistAddPortfolioItem from './artist-page/ArtistAddPortfolioItem';
 import ArtistAddStoreItem from './artist-page/ArtistAddStoreItem';
+import CustomerProfile from './customer-pages/CustomerProfile';
 import CustomerNewRequest from './request-pages/RequestNewCreationPage';
 import CreationRequestPageCustomer from './request-pages/RequestCreationCustomer';
 import CreationRequestPageArtist from './request-pages/RequestCreationArtist';
@@ -106,6 +107,7 @@ function App() {
             <Route path="/profile-artist" element={<ProfileArtistPage />}/>
             <Route path="/add-store-item" element={<ArtistAddStoreItem />}/>
             <Route path="/add-portfolio-item" element={<ArtistAddPortfolioItem />}/>
+            <Route path="/profile" element={<CustomerProfile />}/>
             <Route path='/request-new-creation' element={<CustomerNewRequest/>}/>
             <Route path='/creation-request-customer' element={<CreationRequestPageCustomer />}/>
             <Route path='/creation-request-artist' element={<CreationRequestPageArtist />}/>
