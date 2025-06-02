@@ -16,10 +16,12 @@ import { Artist, PortfolioItem } from '../models/Artist';
 import { StoreItem } from '../models/Store';
 import { Footer } from '../footers/Footer';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
+import { useNavigate } from 'react-router-dom';
 
 const ArtistProfileByCustomer = () => {
   const [artist, setArtist] = useState<Artist | null>(null);
   const portfolioRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const storeRef = useRef<HTMLDivElement>(null);
 
   // Mock data
@@ -117,6 +119,10 @@ const ArtistProfileByCustomer = () => {
       ref.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
+
+  const handleRequestCreation = () => {
+    navigate('/request-new-creation')
+  }
 
   if (!artist) {
     return (
@@ -398,6 +404,7 @@ const ArtistProfileByCustomer = () => {
                 <Button
                   variant="contained"
                   fullWidth
+                  onClick={handleRequestCreation}
                   sx={{
                     py: 1.5,
                     bgcolor: '#1976d2',

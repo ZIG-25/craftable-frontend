@@ -1,11 +1,13 @@
 import { ArtistTopBar } from '../top-bars/ArtistTopBar';
 import { Footer } from '../footers/Footer';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import './ArtistDashboardPage.css';
 import { ItemComponent } from '../components/ItemComponent';
-import logoImg from '../res/images/img_placeholder.jpg'; // placeholder
+import logoImg from '../res/images/img_placeholder.jpg';
+import { useNavigate } from 'react-router-dom'; // placeholder
 
 function ArtistDashboardPage() {
+  const navigate = useNavigate();
   const pendingRequests = [
     {
       imageSrc: logoImg,
@@ -95,6 +97,13 @@ function ArtistDashboardPage() {
             {pendingRequests.map((item, index) => (
               <ItemComponent key={index} {...item} />
             ))}
+            <Button
+              variant="text"
+              fullWidth={true}
+              onClick={() => navigate('/creation-request-list-artist')}
+            >
+              See more
+            </Button>
           </Box>
 
           <Box className="container">

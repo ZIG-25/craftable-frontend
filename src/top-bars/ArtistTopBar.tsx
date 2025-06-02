@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import './ArtistTopBar.css';
+import PaletteIcon from '@mui/icons-material/Palette';
 import {
   AppBar,
   Box,
@@ -54,7 +55,7 @@ export function ArtistTopBar() {
 
   return (
     <>
-      <AppBar sx={{ backgroundColor: 'white' }}>
+      <AppBar sx={{ backgroundColor: 'white', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.21)', '&:hover': {transform: 'none'} }}>
         <Container maxWidth="xl">
           <Toolbar className="customer-tool-bar">
             <Box className="desktop-customer-tool-bar">

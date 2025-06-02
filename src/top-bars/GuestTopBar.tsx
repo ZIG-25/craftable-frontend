@@ -68,7 +68,7 @@ export function GuestTopBar() {
 
   return (
     <>
-      <AppBar sx={{ backgroundColor: 'white' }}>
+      <AppBar sx={{ backgroundColor: 'white', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.21)', '&:hover': {transform: 'none'} }}>
         <Container maxWidth="xl">
           <Toolbar variant="regular" className="guest-tool-bar">
             <Typography variant="h1" component="div" className="title-desktop">

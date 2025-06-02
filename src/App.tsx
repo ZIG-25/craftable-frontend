@@ -18,11 +18,64 @@ import ProfileArtistPage from './artist-page/ProfileArtistPage';
 import ArtistAddPortfolioItem from './artist-page/ArtistAddPortfolioItem';
 import ArtistAddStoreItem from './artist-page/ArtistAddStoreItem';
 import CustomerProfile from './customer-pages/CustomerProfile';
+import CustomerNewRequest from './request-pages/RequestNewCreationPage';
+import CreationRequestPageCustomer from './request-pages/RequestCreationCustomer';
+import CreationRequestPageArtist from './request-pages/RequestCreationArtist';
+import CreationRequestsListCustomer from './request-pages/RequestCreationListCustomer';
+import CreationRequestsListArtist from './request-pages/RequestCreationListArtist';
 
+
+// let theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: '#25DAC5',
+//     },
+//   },
+// });
+
+
+// TODO: Chat suggested this theme Custom theme for modern look
 let theme = createTheme({
   palette: {
-    primary: {
-      main: '#25DAC5',
+    primary: { main: '#25DAC5' },
+    error: { main: '#d32f2f' },
+    success: { main: '#2e7d32' },
+    background: { default: '#f8fafc', paper: '#ffffff' },
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    h4: { fontWeight: 700 },
+    h6: { fontWeight: 600 },
+    subtitle2: { fontWeight: 500, color: '#64748b' },
+    body1: { fontWeight: 400 },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          textTransform: 'none',
+          padding: '12px 24px',
+          fontSize: '1rem',
+          fontWeight: 500,
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-4px)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.21)',
+          },
+        },
+      },
     },
   },
 });
@@ -55,6 +108,11 @@ function App() {
             <Route path="/add-store-item" element={<ArtistAddStoreItem />}/>
             <Route path="/add-portfolio-item" element={<ArtistAddPortfolioItem />}/>
             <Route path="/profile" element={<CustomerProfile />}/>
+            <Route path='/request-new-creation' element={<CustomerNewRequest/>}/>
+            <Route path='/creation-request-customer' element={<CreationRequestPageCustomer />}/>
+            <Route path='/creation-request-artist' element={<CreationRequestPageArtist />}/>
+            <Route path='/creation-request-list-customer' element={<CreationRequestsListCustomer />}/>
+            <Route path='/creation-request-list-artist' element={<CreationRequestsListArtist />}/>
           </Routes>
         </BrowserRouter>
       </ApiProvider>
