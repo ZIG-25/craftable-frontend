@@ -141,7 +141,7 @@ const CreationRequestsListArtist: React.FC = () => {
   return (
     <>
       <ArtistTopBar />
-      <Container maxWidth="lg" className="py-8" sx={{height: '100vh'}}>
+      <Container maxWidth="lg" className="py-8" sx={{height: '100vh', p: 9}}>
         <Box sx={{ mb: 4 }}>
           <TextField
             fullWidth

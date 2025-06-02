@@ -71,7 +71,7 @@ let theme = createTheme({
           transition: 'all 0.3s ease',
           '&:hover': {
             transform: 'translateY(-4px)',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.21)',
           },
         },
       },

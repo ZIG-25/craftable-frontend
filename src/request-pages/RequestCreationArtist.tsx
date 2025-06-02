@@ -115,7 +115,7 @@ const RequestCreationArtist: React.FC = () => {
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           minHeight: 'calc(100vh - 64px)',
-          p: { xs: 2, sm: 3, md: 4 },
+          p: { xs: 7, sm: 8, md: 9 },
           gap: { xs: 3, md: 4 },
           maxWidth: { xs: '100%', md: 'max(65%, 1200px)' },
           mx: 'auto',
