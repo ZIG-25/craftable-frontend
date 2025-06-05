@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Container,
   Typography,
@@ -13,11 +13,15 @@ import {
 } from '@mui/material';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { Footer } from '../footers/Footer';
+import { Artist } from '../models/Artist';
+import { useApi } from '../api/ApiProvider';
 
 const RequestForm: React.FC = () => {
   const location = useLocation();
-  const artistName = location.state?.artistName ?? 'Unknown artist';
+  const api = useApi();
+  const navigate = useNavigate();
 
+  const [artist, setArtist] = useState<Artist>(location.state?.artist);
   const [title, setTitle] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [deadline, setDeadline] = useState<string>('');
@@ -61,6 +65,24 @@ const RequestForm: React.FC = () => {
   
   const isFormInvalid = isTitleEmpty || isPriceEmpty || isDeadlineEmpty || isDescriptionEmpty || isDeadlineInvalid;
 
+  const makeRequest = () => {
+    api.createRequest({
+      title: title,
+      description: description,
+      price: +price,
+      creatorId: artist,
+      deadline: new Date(deadline),
+      status: 'awaiting acceptation'
+    }).then(response => {
+      if (!response.success) {
+        console.error(response);
+        return;
+      }
+
+      navigate(-1)
+    })
+  }
+
   return (
     <>
       <CustomerTopBar />
@@ -72,7 +94,7 @@ const RequestForm: React.FC = () => {
             gutterBottom
             sx={{ fontWeight: 'bold', mb: 4 }}
           >
-            Request creation from {artistName}
+            Request creation from {artist.name + ' ' + artist.surname}
           </Typography>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
@@ -157,6 +179,7 @@ const RequestForm: React.FC = () => {
               color="primary"
               size="large"
               sx={{ borderRadius: 3, px: 4 }}
+              onClick={makeRequest}
               disabled={isFormInvalid}
             >
               Make Request

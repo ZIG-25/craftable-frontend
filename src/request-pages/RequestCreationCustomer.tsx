@@ -23,8 +23,8 @@ const RequestCreationCustomer: React.FC = () => {
   const data: CreationRequest | null = location.state?.request?? null;
   const title = data?.title ?? 'Unknown';
   const description = data?.description ?? 'Unknown';
-  const artistName = data?.creator?.login ?? 'Unknown';
-  const customerName = data?.customer?.login ?? 'Unknown';
+  const artistName = data?.creatorId?.login ?? 'Unknown';
+  const customerName = data?.customerId?.login ?? 'Unknown';
   const price = data?.price ?? 0;
   const status = data?.status ?? 'unknown';
 

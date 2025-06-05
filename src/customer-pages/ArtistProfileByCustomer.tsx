@@ -16,99 +16,26 @@ import { Artist, PortfolioItem } from '../models/Artist';
 import { StoreItem } from '../models/Store';
 import { Footer } from '../footers/Footer';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useApi } from '../api/ApiProvider';
 
 const ArtistProfileByCustomer = () => {
   const [artist, setArtist] = useState<Artist | null>(null);
+  const api = useApi();
+  const location = useLocation();
   const portfolioRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const storeRef = useRef<HTMLDivElement>(null);
 
-  // Mock data
-  const mockArtist: Artist = {
-    login: 'artist1',
-    name: 'John',
-    lastname: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '123-456-7890',
-    bio: 'John Doe is a passionate artist with over 10 years of experience in digital and traditional art. His work explores themes of nature and human emotion.',
-    portfolioItems: [
-      {
-        id: 1,
-        title: 'Sunset Over Mountains',
-        description: 'A vibrant digital painting of a sunset.',
-        images: ['https://picsum.photos/200/150?random=1'],
-      },
-      {
-        id: 2,
-        title: 'Abstract Waves',
-        description: 'An abstract representation of ocean waves.',
-        images: ['https://picsum.photos/200/150?random=2'],
-      },
-      {
-        id: 3,
-        title: 'Sunset Over Mountains',
-        description: 'A vibrant digital painting of a sunset.',
-        images: ['https://picsum.photos/200/150?random=1'],
-      },
-      {
-        id: 4,
-        title: 'Abstract Waves',
-        description: 'An abstract representation of ocean waves.',
-        images: ['https://picsum.photos/200/150?random=2'],
-      },
-      {
-        id: 11,
-        title: 'Sunset Over Mountains',
-        description: 'A vibrant digital painting of a sunset.',
-        images: ['https://picsum.photos/200/150?random=1'],
-      },
-      {
-        id: 21,
-        title: 'Abstract Waves',
-        description: 'An abstract representation of ocean waves.',
-        images: ['https://picsum.photos/200/150?random=2'],
-      },
-      {
-        id: 31,
-        title: 'Sunset Over Mountains',
-        description: 'A vibrant digital painting of a sunset.',
-        images: ['https://picsum.photos/200/150?random=1'],
-      },
-      {
-        id: 41,
-        title: 'Abstract Waves',
-        description: 'An abstract representation of ocean waves.',
-        images: ['https://picsum.photos/200/150?random=2'],
-      },
-    ],
-    storeItems: [
-      {
-        id: 1,
-        title: 'Canvas Print: Sunset',
-        description: 'High-quality canvas print.',
-        price: 99.99,
-        images: ['https://picsum.photos/200/150?random=1'],
-        artist: undefined,
-      },
-      {
-        id: 2,
-        title: 'Poster: Waves',
-        description: 'Glossy poster of Abstract Waves.',
-        price: 29.99,
-        images: ['https://picsum.photos/200/150?random=1'],
-        artist: undefined,
-      },
-    ],
-    professions: ['Digital Artist', 'Illustrator'],
-  };
-
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setArtist(mockArtist);
-    }, 10);
-  }, []);
+    console.log(location.state);
+    api.getArtist(location.state?.id ?? -1).then((response) => {
+      if (!response.success) {
+        return;
+      }
+      setArtist(response.data);
+    });
+  }, [api, location.state?.id]);
 
   const scroll = (
     ref: React.RefObject<HTMLDivElement>,
@@ -121,8 +48,8 @@ const ArtistProfileByCustomer = () => {
   };
 
   const handleRequestCreation = () => {
-    navigate('/request-new-creation')
-  }
+    navigate('/request-new-creation', {state: {artist: artist}});
+  };
 
   if (!artist) {
     return (
@@ -150,7 +77,7 @@ const ArtistProfileByCustomer = () => {
                   gutterBottom
                   sx={{ fontWeight: 'bold', color: '#333' }}
                 >
-                  {artist.name} {artist.lastname}
+                  {artist.name} {artist.surname}
                 </Typography>
                 <Typography
                   variant="body1"
@@ -172,7 +99,7 @@ const ArtistProfileByCustomer = () => {
                 >
                   Portfolio
                 </Typography>
-                {artist.portfolioItems.length > 0 ? (
+                {(artist.portfolioItems ?? []).length > 0 ? (
                   <Box sx={{ position: 'relative' }}>
                     <IconButton
                       onClick={() => {
@@ -201,40 +128,42 @@ const ArtistProfileByCustomer = () => {
                         pb: 2,
                       }}
                     >
-                      {artist.portfolioItems.map((item: PortfolioItem) => (
-                        <Box
-                          key={item.id}
-                          sx={{
-                            flex: '0 0 auto',
-                            width: 300,
-                            scrollSnapAlign: 'start',
-                          }}
-                        >
-                          <Card
-                            sx={{ boxShadow: 3, '&:hover': { boxShadow: 6 } }}
+                      {(artist.portfolioItems ?? []).map(
+                        (item: PortfolioItem) => (
+                          <Box
+                            key={item.id}
+                            sx={{
+                              flex: '0 0 auto',
+                              width: 300,
+                              scrollSnapAlign: 'start',
+                            }}
                           >
-                            <CardMedia
-                              component="img"
-                              height="300"
-                              image={
-                                item.images[0] ||
-                                'https://via.placeholder.com/300'
-                              }
-                              alt={item.title}
-                              sx={{ objectFit: 'cover' }}
-                            />
-                            <CardContent>
-                              <Typography
-                                variant="h6"
-                                align="center"
-                                sx={{ color: '#333' }}
-                              >
-                                {item.title || 'Untitled'}
-                              </Typography>
-                            </CardContent>
-                          </Card>
-                        </Box>
-                      ))}
+                            <Card
+                              sx={{ boxShadow: 3, '&:hover': { boxShadow: 6 } }}
+                            >
+                              <CardMedia
+                                component="img"
+                                height="300"
+                                image={
+                                  item.images[0] ||
+                                  'https://via.placeholder.com/300'
+                                }
+                                alt={item.title}
+                                sx={{ objectFit: 'cover' }}
+                              />
+                              <CardContent>
+                                <Typography
+                                  variant="h6"
+                                  align="center"
+                                  sx={{ color: '#333' }}
+                                >
+                                  {item.title || 'Untitled'}
+                                </Typography>
+                              </CardContent>
+                            </Card>
+                          </Box>
+                        ),
+                      )}
                     </Box>
                     <IconButton
                       onClick={() => {
@@ -272,7 +201,7 @@ const ArtistProfileByCustomer = () => {
                 >
                   Store
                 </Typography>
-                {artist.storeItems.length > 0 ? (
+                {(artist.storeItems ?? []).length > 0 ? (
                   <Box sx={{ position: 'relative' }}>
                     <IconButton
                       onClick={() => {
@@ -301,7 +230,7 @@ const ArtistProfileByCustomer = () => {
                         pb: 2,
                       }}
                     >
-                      {artist.storeItems.map((item: StoreItem) => (
+                      {(artist.storeItems ?? []).filter(it => !it.itemOrderId).map((item: StoreItem) => (
                         <Box
                           key={item.id}
                           sx={{
@@ -317,7 +246,7 @@ const ArtistProfileByCustomer = () => {
                               component="img"
                               height="300"
                               image={
-                                item.images[0] ||
+                                item.itemPictureIds[0].photoUrl ||
                                 'https://via.placeholder.com/300'
                               }
                               alt={item.title}
@@ -393,12 +322,12 @@ const ArtistProfileByCustomer = () => {
                   <strong>Email:</strong> {artist.email || 'N/A'}
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 1, color: '#555' }}>
-                  <strong>Phone:</strong> {artist.phone || 'N/A'}
+                  <strong>Phone:</strong> {artist.phoneNumber || 'N/A'}
                 </Typography>
                 <Typography variant="body1" sx={{ mb: 3, color: '#555' }}>
                   <strong>Professions:</strong>{' '}
-                  {artist.professions.length > 0
-                    ? artist.professions.join(', ')
+                  {(artist.professions ?? []).length > 0
+                    ? (artist.professions ?? []).join(', ')
                     : 'None listed'}
                 </Typography>
                 <Button

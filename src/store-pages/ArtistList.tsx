@@ -16,109 +16,17 @@ import {
 } from '@mui/material';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { Footer } from '../footers/Footer';
-
-// Define StoreItem class (minimal, as not used in display)
-class StoreItem {
-  id: string | undefined;
-}
-
-// Define Artist class as provided
-export class Artist {
-  login: string | undefined;
-  name: string | undefined;
-  lastname: string | undefined;
-  email: string | undefined;
-  storeItems: StoreItem[] = [];
-  professions: string[] = [];
-}
-
-// Mock data for artists
-const mockArtists: Artist[] = [
-  {
-    login: 'artist1',
-    name: 'John',
-    lastname: 'Doe',
-    email: 'john.doe@example.com',
-    professions: ['Painter', 'Sculptor'],
-    storeItems: [],
-  },
-  {
-    login: 'artist2',
-    name: 'Jane',
-    lastname: 'Smith',
-    email: 'jane.smith@example.com',
-    professions: ['Photographer', 'Digital Artist'],
-    storeItems: [],
-  },
-  {
-    login: 'artist3',
-    name: 'Alice',
-    lastname: 'Johnson',
-    email: 'alice.j@example.com',
-    professions: ['Illustrator', 'Painter'],
-    storeItems: [],
-  },
-  {
-    login: 'artist4',
-    name: 'Bob',
-    lastname: 'Brown',
-    email: 'bob.brown@example.com',
-    professions: ['Sculptor', 'Ceramist'],
-    storeItems: [],
-  },
-  {
-    login: 'artist5',
-    name: 'Emma',
-    lastname: 'Davis',
-    email: 'emma.davis@example.com',
-    professions: ['Digital Artist', 'Animator'],
-    storeItems: [],
-  },
-  {
-    login: 'artist6',
-    name: 'Michael',
-    lastname: 'Wilson',
-    email: 'michael.w@example.com',
-    professions: ['Painter', 'Photographer'],
-    storeItems: [],
-  },
-  {
-    login: 'artist7',
-    name: 'Sophia',
-    lastname: 'Taylor',
-    email: 'sophia.t@example.com',
-    professions: ['Illustrator', 'Animator'],
-    storeItems: [],
-  },
-  {
-    login: 'artist8',
-    name: 'David',
-    lastname: 'Clark',
-    email: 'david.clark@example.com',
-    professions: ['Ceramist', 'Sculptor'],
-    storeItems: [],
-  },
-  {
-    login: 'artist9',
-    name: 'Olivia',
-    lastname: 'Lewis',
-    email: 'olivia.lewis@example.com',
-    professions: ['Photographer', 'Digital Artist'],
-    storeItems: [],
-  },
-  {
-    login: 'artist10',
-    name: 'James',
-    lastname: 'Walker',
-    email: 'james.walker@example.com',
-    professions: ['Painter', 'Illustrator'],
-    storeItems: [],
-  },
-];
+import { Artist } from '../models/Artist';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ArtistList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProfessions, setSelectedProfessions] = useState<string[]>([]);
+  const location = useLocation();
+  const [artists, setArtists] = useState<Artist[]>(
+    location.state?.artists ?? [],
+  );
+  const navigate = useNavigate();
 
   // Handle search input
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -131,29 +39,29 @@ const ArtistList = () => {
   };
 
   const allProfessions = Array.from(
-    new Set(mockArtists.map((it) => it.professions).flat()),
+    new Set(artists.map((it) => it.professions ?? []).flat()),
   );
 
   // Filter artists based on search and professions
   const filteredArtists = useMemo(() => {
-    return mockArtists.filter((artist) => {
+    return artists.filter((artist) => {
       // Search filter
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch =
         !searchTerm ||
         (artist.name?.toLowerCase().includes(searchLower) ?? false) ||
-        (artist.lastname?.toLowerCase().includes(searchLower) ?? false) ||
+        (artist.surname?.toLowerCase().includes(searchLower) ?? false) ||
         (artist.email?.toLowerCase().includes(searchLower) ?? false) ||
         (artist.login?.toLowerCase().includes(searchLower) ?? false);
 
       // Profession filter
       const matchesProfessions =
         selectedProfessions.length === 0 ||
-        selectedProfessions.every((prof) => artist.professions.includes(prof));
+        selectedProfessions.every((prof) => artist.professions?.includes(prof) ?? false);
 
       return matchesSearch && matchesProfessions;
     });
-  }, [searchTerm, selectedProfessions]);
+  }, [artists, searchTerm, selectedProfessions]);
 
   return (
     <>
@@ -227,7 +135,11 @@ const ArtistList = () => {
                 filteredArtists.map((artist) => (
                   <Card
                     key={artist.login}
-                    onClick={() => console.log(artist)}
+                    onClick={() =>
+                      navigate('/artist-profile-details', {
+                        state: { id: artist.id },
+                      })
+                    }
                     sx={{
                       mb: 2,
                       borderRadius: 2,
@@ -243,16 +155,13 @@ const ArtistList = () => {
                         variant="h6"
                         sx={{ fontWeight: 'bold', color: '#1A202C' }}
                       >
-                        {artist.name} {artist.lastname}
-                      </Typography>
-                      <Typography sx={{ color: '#4B5563', mb: 1 }}>
-                        Login: {artist.login ?? 'N/A'}
+                        {artist.name} {artist.surname}
                       </Typography>
                       <Typography sx={{ color: '#4B5563', mb: 1 }}>
                         Email: {artist.email ?? 'N/A'}
                       </Typography>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                        {artist.professions.map((profession) => (
+                        {(artist?.professions ?? []).map((profession) => (
                           <Chip
                             key={profession}
                             label={profession}

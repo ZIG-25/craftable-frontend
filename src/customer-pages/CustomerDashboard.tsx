@@ -3,110 +3,45 @@ import { Footer } from '../footers/Footer';
 import { Box, Typography, Button, Paper } from '@mui/material';
 import ImageCarousel from '../components/images/ImageCarousel';
 import { OfferImageComponent } from '../components/ItemComponent';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApi } from '../api/ApiProvider';
+import { Artist } from '../models/Artist';
+import { StoreItem } from '../models/Store';
 
-// Sample image URLs (replace with your own)
-const images = [
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 1',
-    onClick: () => console.log('Clicked: 1'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 2',
-    onClick: () => console.log('Clicked: 2'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 3',
-    onClick: () => console.log('Clicked: 3'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 5',
-    onClick: () => console.log('Clicked: 5'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 6',
-    onClick: () => console.log('Clicked: 6'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 7',
-    onClick: () => console.log('Clicked: 7'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 8',
-    onClick: () => console.log('Clicked: 8'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 9',
-    onClick: () => console.log('Clicked: 9'),
-  },
-  {
-    imgSrc:
-      'https://www.cbdzoe.pl/img/artykuly/rzeczy-ktore-wie-twoj-pies-artykuly-cbdzoe-01.jpg',
-    imgAlt: 'Alt text 10',
-    onClick: () => console.log('Clicked: 10'),
-  },
-];
-
-const artists = [
-  {
-    artistUsername: 'First',
-    id: 0,
-  },
-  {
-    artistUsername: 'Second',
-    id: 0,
-  },
-  {
-    artistUsername: 'First',
-    id: 0,
-  },
-  {
-    artistUsername: 'Second',
-    id: 0,
-  },
-  {
-    artistUsername: 'First',
-    id: 0,
-  },
-  {
-    artistUsername: 'Second',
-    id: 0,
-  },
-  {
-    artistUsername: 'First',
-    id: 0,
-  },
-  {
-    artistUsername: 'Second',
-    id: 0,
-  },
-];
 
 function CustomerDashboard() {
   const navigate = useNavigate();
+  const api = useApi();
+  const [storeItems, setStoreItems] = useState<StoreItem[]>([]);
+  const [artists, setArtists] = useState<Artist[]>([]);
+
+  useEffect(() => {
+    api.getAllArtists().then(response => {
+      if (!response.success) {
+        console.error("Error fetching Artists");
+        return;
+      }
+
+      setArtists(response.data);
+    })
+
+    api.getAllOffers().then(response => {
+      if (!response.success) {
+        console.error("Error fetching Offers");
+      }
+      setStoreItems(response.data.filter(it => !it.itemOrderId ));
+    })
+  }, [api])
+
+
   return (
     <>
       <CustomerTopBar />
       <Box
         sx={{
           maxWidth: 'lg',
+          height: '100vh',
           mx: 'auto',
           px: { xs: 2, sm: 3, lg: 4 },
           py: 4,
@@ -166,13 +101,14 @@ function CustomerDashboard() {
             </Button>
           </Box>
           <ImageCarousel
-            images={images.map((e) =>
+            images={storeItems.map((e) =>
               OfferImageComponent({
-                imageSrc: e.imgSrc,
-                artistUsername: 'Test art',
-                title: e.imgAlt,
-                price: '98.289',
-                onClick: e.onClick,
+                imageSrc: e.itemPictureIds[0]?.photoUrl ?? '',
+                artistUsername: e.creatorId?.email ?? '',
+                title: e.title ?? '',
+                price: e.price + '$',
+                onClick: () => {
+                  console.log(e);},
               }),
             )}
           />
@@ -232,13 +168,14 @@ function CustomerDashboard() {
             </Button>
           </Box>
           <ImageCarousel
-            images={images.map((e) =>
+            images={storeItems.map((e) =>
               OfferImageComponent({
-                imageSrc: e.imgSrc,
-                artistUsername: 'Test art',
-                title: e.imgAlt,
-                price: '98.289',
-                onClick: e.onClick,
+                imageSrc: e.itemPictureIds[0]?.photoUrl ?? '',
+                artistUsername: e.creatorId?.email ?? '',
+                title: e.title ?? '',
+                price: e.price + '$',
+                onClick: () => {
+                  console.log(e);},
               }),
             )}
           />
@@ -292,7 +229,7 @@ function CustomerDashboard() {
                   transform: 'scale(0.95)',
                 },
               }}
-              onClick={() => navigate('/artists')}
+              onClick={() => navigate('/artists', {state: {artists: artists}})}
             >
               Show More
             </Button>
@@ -300,7 +237,7 @@ function CustomerDashboard() {
           <ImageCarousel
             images={artists.map((a) => (
               <Box
-                key={a.artistUsername + a.id}
+                key={a.email + ' '}
                 className="offer-container"
                 sx={{
                   display: 'flex',
@@ -317,8 +254,8 @@ function CustomerDashboard() {
                   src={
                     'https://images.pexels.com/photos/14653174/pexels-photo-14653174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
                   }
-                  alt={a.artistUsername}
-                  onClick={() => console.log(a.artistUsername)}
+                  alt={a.name + ' ' + a.surname}
+                  onClick={() => navigate('/artist-profile-details', {state: {id: a.id}})}
                   sx={{
                     width: 300,
                     height: 200,
@@ -339,7 +276,7 @@ function CustomerDashboard() {
                     color: '#1A202C',
                   }}
                 >
-                  {a.artistUsername}
+                  {a.name + ' ' + a.surname}
                 </Typography>
               </Box>
             ))}

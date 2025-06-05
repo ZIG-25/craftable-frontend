@@ -4,26 +4,50 @@ import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { Footer } from '../footers/Footer';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StoreItem } from '../models/Store';
-
+import { useApi } from '../api/ApiProvider';
 
 const StoreItemDetails = () => {
   const location = useLocation();
+  const api = useApi();
   const navigate = useNavigate();
-  const initialItem = (location.state as { item?: StoreItem } | null)?.item ?? null;
+  const initialItem =
+    (location.state as { item?: StoreItem } | null)?.item ?? null;
   if (!initialItem) {
     navigate('/store');
   }
   const [item, setItem] = useState(initialItem);
 
-  const [selectedImage, setSelectedImage] = useState(item?.images[0] ?? '');
+  const [selectedImage, setSelectedImage] = useState(
+    item?.itemPictureIds[0].photoUrl ?? '',
+  );
   useEffect(() => {
     const item = (location.state as { item?: StoreItem } | null)?.item ?? null;
     if (!initialItem) {
       navigate('/store');
     }
     setItem(item);
-    setSelectedImage(item?.images[0] ?? '');
+    setSelectedImage(item?.itemPictureIds[0].photoUrl ?? '');
   }, [initialItem, location.state, navigate]);
+
+  const handleBuy = () => {
+    api
+      .createOrder({
+        deliveryAddress: '',
+        date: new Date(),
+        status: 'Ordered',
+        itemForSaleId: initialItem ?? undefined,
+      })
+      .then((response) => {
+        if (!response.success) {
+          console.error(response);
+          return;
+        }
+        alert(
+          'You bought this item, this is temporary message until payment system is implemented',
+        );
+        navigate('/store');
+      });
+  };
 
   return (
     <>
@@ -56,17 +80,17 @@ const StoreItemDetails = () => {
                   style={{
                     width: '100%',
                     height: '400px',
-                    objectFit: 'cover',
+                    objectFit: 'contain',
                     borderRadius: '14px',
                   }}
                 />
               </Box>
               <Box sx={{ display: 'flex', overflowX: 'auto', gap: 1 }}>
-                {item?.images.map((image, index) => (
+                {item?.itemPictureIds.map((image, index) => (
                   <Box
                     key={index}
                     component="img"
-                    src={image}
+                    src={image.photoUrl}
                     alt={`Thumbnail ${index + 1}`}
                     sx={{
                       width: 100,
@@ -77,7 +101,7 @@ const StoreItemDetails = () => {
                       border:
                         selectedImage === image ? '2px solid blue' : 'none',
                     }}
-                    onClick={() => setSelectedImage(image)}
+                    onClick={() => setSelectedImage(image.photoUrl ?? '')}
                   />
                 ))}
               </Box>
@@ -103,7 +127,7 @@ const StoreItemDetails = () => {
                 color="text.secondary"
                 gutterBottom
               >
-                Artist: {item?.artist?.name} {item?.artist?.lastname}
+                Artist: {item?.creatorId?.name} {item?.creatorId?.surname}
               </Typography>
               <Typography variant="h6" color="primary" gutterBottom>
                 ${item?.price?.toFixed(2) ?? '---'}
@@ -115,6 +139,7 @@ const StoreItemDetails = () => {
                 variant="contained"
                 color="primary"
                 size="large"
+                onClick={handleBuy}
                 sx={{ mt: 2 }}
               >
                 Buy

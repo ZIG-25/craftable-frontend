@@ -1,6 +1,6 @@
 import { Footer } from '../footers/Footer';
 import { ArtistTopBar } from '../top-bars/ArtistTopBar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,43 +25,43 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { ALL_PROFESSIONS, Artist } from '../models/Artist';
+import { useApi } from '../api/ApiProvider';
+import { EmailOutlined, Label } from '@mui/icons-material';
 
 export default function ProfileArtistPage() {
-  const ALL_PROFESSIONS = [
-    'Painters & Illustrators',
-    'Ceramic artists',
-    'Fiber artists',
-    'Jewelery makers',
-    'Leatherworkers',
-    'Soap & Candle artists',
-    'Woodworkers',
-    'Mixed media',
-    'Doll & Miniature artists',
-  ];
+  const api = useApi();
+  const [artist, setArtist] = useState<Artist | null>(null);
 
   const navigate = useNavigate();
-  const [selected, setSelected] = useState<string[]>([
-    'Painters & Illustrators',
-    'Fiber artists',
-  ]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   // regex expression for validating phone number
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+  const phoneRegExp = /^\d{3}\s\d{3}\s\d{3}/;
+
+  useEffect(() => {
+
+    api.getArtistSigned().then((response) => {
+      if (!response.success) {
+        console.error(response);
+        navigate('/login');
+        return;
+      }
+      setArtist(response.data);
+      setSelected(response.data?.professions ?? []);
+
+    });
+  }, [api]);
 
   const formik = useFormik({
     initialValues: {
-      description: 'Description',
-      emailAddress: 'jan.kowalski@gmail.com',
-      phoneNumber: '+48 000 000 000',
+      description: artist?.bio ?? '',
+      phoneNumber: artist?.phoneNumber ?? '',
     },
     validationSchema: Yup.object({
       description: Yup.string().required('Description is required'),
-      emailAddress: Yup.string()
-        .email('Invalid email')
-        .required('Email is required'),
       phoneNumber: Yup.string()
         .matches(phoneRegExp, 'Phone number is not valid')
         .required(),
@@ -88,12 +88,21 @@ export default function ProfileArtistPage() {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    if (artist) {
+      formik.setValues({
+        description: artist.bio ?? '',
+        phoneNumber: artist.phoneNumber ?? '',
+      });
+    }
+  }, [artist]);
+
   const handleAddPortfolioItem = () => {
     navigate('/add-portfolio-item');
   };
 
   const handleAddStoreItem = () => {
-    navigate('/add-store-item');
+    navigate('/add-store-item', {state: {id: artist?.id ?? -1}});
   };
 
   const remainingOptions = ALL_PROFESSIONS.filter((p) => !selected.includes(p));
@@ -131,7 +140,7 @@ export default function ProfileArtistPage() {
           >
             <Box component="form" onSubmit={formik.handleSubmit}>
               <Typography variant="h3" fontWeight="bold">
-                Jan Kowalski
+                {artist?.name + ' ' + artist?.surname}
               </Typography>
               <TextField
                 fullWidth
@@ -210,27 +219,11 @@ export default function ProfileArtistPage() {
               <Typography variant="h6" mt={3} fontWeight="bold">
                 Contact info
               </Typography>
-              <TextField
-                fullWidth
-                margin="normal"
-                name="emailAddress"
-                value={formik.values.emailAddress}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.emailAddress &&
-                  Boolean(formik.errors.emailAddress)
-                }
-                helperText={
-                  formik.touched.emailAddress && formik.errors.emailAddress
-                }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
+
+              <Typography fontSize={24} textAlign="start" align={'center'} justifyContent={'center'}>
+                <EmailIcon sx={{mr: 1}} fontSize={'inherit'}/>
+                {artist?.email}
+              </Typography>
               <TextField
                 fullWidth
                 margin="normal"
@@ -274,14 +267,17 @@ export default function ProfileArtistPage() {
               My portfolio
             </Typography>
             <Grid container spacing={2} mt={1}>
-              {[1, 2, 3].map((item) => (
-                <Grid item xs={6} md={6} key={item}>
+              {(artist?.portfolioItems ?? []).map((item) => (
+                <Grid item xs={6} md={6} key={item.id}>
                   <Card>
-                    <CardMedia component="img" image={img} height="140" />
+                    <CardMedia
+                      component="img"
+                      image={item.images}
+                      height="140"
+                    />
                     <CardContent>
                       <Typography variant="body2">
-                        Description {item} Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit.
+                        {item?.description}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -309,19 +305,18 @@ export default function ProfileArtistPage() {
             <Typography variant="h4" mt={4} fontWeight="bold">
               Store
             </Typography>
-            <Grid
-              container
-              spacing={2}
-              mt={1}
-            >
-              {[1, 2, 3].map((item) => (
-                <Grid item xs={6} md={6} key={item}>
+            <Grid container spacing={2} mt={1}>
+              {(artist?.storeItems ?? []).filter(it => !it.itemOrderId ).map((item) => (
+                <Grid item xs={6} md={6} key={item.id}>
                   <Card>
-                    <CardMedia component="img" image={img} height="140" />
+                    <CardMedia
+                      component="img"
+                      image={(item?.itemPictureIds ?? []).length === 0 ? '' : item?.itemPictureIds[0]?.photoUrl ?? ''}
+                      height="140"
+                    />
                     <CardContent>
                       <Typography variant="body2">
-                        Description {item} Lorem ipsum dolor sit amet,
-                        consectetur adipiscing elit.
+                        {item?.title}
                       </Typography>
                     </CardContent>
                   </Card>

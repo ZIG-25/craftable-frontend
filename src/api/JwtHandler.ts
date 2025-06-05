@@ -38,6 +38,7 @@ export class JwtHandler {
     if (!this.token) {
       this.token = localStorage.getItem(this.TOKEN_KEY) ?? undefined;
     }
+    console.log(this.token);
 
     // If there is still not token, raise error
     if (!this.token) {

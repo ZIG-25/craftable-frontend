@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import './ItemComponent.css';
+import { Order } from '../models/Order';
+import { CreationRequest } from '../models/CreationRequest';
 
 /*
 This component can be used in other pages, such as 'Client request' in Figma. 
@@ -14,6 +16,15 @@ interface ItemProps {
   price: string;
   state: string;
 }
+
+interface OrderHistoryItemProps {
+  imageSrc: string;
+  date: string;
+  title: string;
+  price: string;
+  state: string;
+}
+
 
 interface OfferProps {
   imageSrc: string;
@@ -30,22 +41,39 @@ interface ArtistStoreItemProps {
   description: string;
 }
 
-export function ItemComponent({
-  imageSrc,
-  customerUsername,
-  title,
-  price,
-  state,
-}: ItemProps) {
+export function ItemComponent({request}: {request: CreationRequest}) {
   return (
     <Box className="item-container">
-      <img src={imageSrc} className="item-image" />
+
       <Box className="item-info">
-        <Typography className="item-user">From {customerUsername}</Typography>
-        <Typography className="item-title">{title}</Typography>
-        <Typography className="item-price">{price}</Typography>
+        <Typography className="item-user">From {request.customerId?.name}</Typography>
+        <Typography className="item-title">{request.title}</Typography>
+        <Typography className="item-price">{request.price}</Typography>
       </Box>
-      <Typography className="item-state">{state}</Typography>
+      <Typography className="item-state">{request.status}</Typography>
+    </Box>
+  );
+}
+
+export function OrderHistoryComponent({ order }: { order: Order }) {
+  return (
+    <Box className="item-container">
+      <img
+        src={order.itemForSaleId?.itemPictureIds[0]?.photoUrl}
+        className="item-image"
+      />
+      <Box className="item-info">
+        <Typography className="item-title">
+          {order.itemForSaleId?.title}
+        </Typography>
+        <Typography className="item-user">
+          Bought: {order.date?.toString()}
+        </Typography>
+        <Typography className="item-price">
+          {order.itemForSaleId?.price}
+        </Typography>
+      </Box>
+      <Typography className="item-state">{order.status}</Typography>
     </Box>
   );
 }

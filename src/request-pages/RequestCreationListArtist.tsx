@@ -25,55 +25,7 @@ import { ArtistTopBar } from '../top-bars/ArtistTopBar';
 
 
 const mockRequests: CreationRequest[] = [
-  {
-    title: 'Portrait Painting',
-    description: 'Custom oil portrait',
-    price: 500,
-    customer: {
-      name: 'John',
-      surname: 'Doe',
-      login: 'John Doe',
-      bio: '',
-      password: '',
-      email: '',
-    },
-    creator: {
-      name: 'Jane',
-      surname: 'Smith',
-      login: 'Jane Smith',
-      bio: '',
-      password: '',
-      email: '',
-      professions: [],
-      phoneNumber: 0,
-    },
-    status: 'pending',
-  },
-  {
-    title: 'Digital Illustration',
-    description: 'Fantasy character design',
-    price: 300,
-    customer: {
-      name: 'Alice',
-      surname: 'Johnson',
-      login: 'Alice Johnson',
-      bio: '',
-      password: '',
-      email: '',
-    },
-    creator: {
-      name: 'Bob',
-      surname: 'Wilson',
-      login: 'Bob Wilson',
-      bio: '',
-      password: '',
-      email: '',
-      professions: [],
-      phoneNumber: 0,
-    },
-    status: 'awaiting acceptation',
-  },
-  
+
 ];
 
 
@@ -117,10 +69,10 @@ const CreationRequestsListArtist: React.FC = () => {
   const filteredRequests = mockRequests.filter((request) => {
     const matchesSearch =
       request.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      request.customer?.name
+      request.customerId?.name
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
-      request.customer?.surname
+      request.customerId?.surname
         ?.toLowerCase()
         .includes(searchTerm.toLowerCase()) ||
       false;
@@ -221,12 +173,12 @@ const CreationRequestsListArtist: React.FC = () => {
                               Price: ${request.price || 'N/A'}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Customer: {request.customer?.name}{' '}
-                              {request.customer?.surname}
+                              Customer: {request.customerId?.name}{' '}
+                              {request.customerId?.surname}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                              Creator: {request.creator?.name}{' '}
-                              {request.creator?.surname}
+                              Creator: {request.creatorId?.name}{' '}
+                              {request.creatorId?.surname}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
                               Status: {request.status || 'N/A'}

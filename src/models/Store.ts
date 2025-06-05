@@ -1,12 +1,17 @@
 import { Artist } from './Artist';
 
 export class StoreItem {
-  id: number | undefined;
+  id?: number | undefined;
   price: number | undefined;
   title: string | undefined;
   description: string | undefined;
-  images: string[] = [];
-  artist: Artist | undefined;
+  itemPictureIds: ItemPicture[] = [];
+  creatorId: Artist | undefined;
+  itemOrderId?: number | null;
 
+}
 
+export class ItemPicture {
+  id?: number;
+  photoUrl?: string;
 }

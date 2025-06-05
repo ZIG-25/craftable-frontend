@@ -2,80 +2,30 @@ import { ArtistTopBar } from '../top-bars/ArtistTopBar';
 import { Footer } from '../footers/Footer';
 import { Box, Button } from '@mui/material';
 import './ArtistDashboardPage.css';
-import { ItemComponent } from '../components/ItemComponent';
+import { ItemComponent, OrderHistoryComponent } from '../components/ItemComponent';
 import logoImg from '../res/images/img_placeholder.jpg';
-import { useNavigate } from 'react-router-dom'; // placeholder
+import { useNavigate } from 'react-router-dom';
+import { useApi } from '../api/ApiProvider';
+import { useEffect, useState } from 'react';
+import { CreationRequest } from '../models/CreationRequest';
+import { StoreItem } from '../models/Store';
+import { Order } from '../models/Order'; // placeholder
 
 function ArtistDashboardPage() {
   const navigate = useNavigate();
-  const pendingRequests = [
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user1',
-      title: 'Vase',
-      price: '199$',
-      state: 'Available',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user2',
-      title: 'Painting',
-      price: '299$',
-      state: 'Pending',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user3',
-      title: 'Sculpture',
-      price: '399$',
-      state: 'Reserved',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user4',
-      title: 'Lamp',
-      price: '149$',
-      state: 'Available',
-    },
-  ];
+  const api = useApi();
+  const [pendingRequests, setPendingRequests] = useState<CreationRequest[]>([]);
+  const [ordersHistory, setOrdersHistory] = useState<Order[]>([]);
 
-  const ordersHistory = [
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user5',
-      title: 'Mug',
-      price: '49$',
-      state: 'Sold',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user6',
-      title: 'Bowl',
-      price: '89$',
-      state: 'Delivered',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user7',
-      title: 'Plate',
-      price: '59$',
-      state: 'Sold',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user8',
-      title: 'Poster',
-      price: '39$',
-      state: 'Delivered',
-    },
-    {
-      imageSrc: logoImg,
-      customerUsername: 'user9',
-      title: 'Notebook',
-      price: '19$',
-      state: 'Sold',
-    },
-  ];
+  useEffect(() => {
+    api.getAllOrders().then(response => {
+      if (!response.success) {
+        console.error(response);
+        return;
+      }
+      setOrdersHistory(response.data);
+    })
+  }, []);
 
   return (
     <>
@@ -95,7 +45,7 @@ function ArtistDashboardPage() {
           <Box className="container">
             <h2>Pending requests</h2>
             {pendingRequests.map((item, index) => (
-              <ItemComponent key={index} {...item} />
+              <ItemComponent key={index} request={item} />
             ))}
             <Button
               variant="text"
@@ -109,7 +59,7 @@ function ArtistDashboardPage() {
           <Box className="container">
             <h2>Orders history</h2>
             {ordersHistory.map((item, index) => (
-              <ItemComponent key={index} {...item} />
+              <OrderHistoryComponent key={index} order={item}/>
             ))}
           </Box>
         </Box>

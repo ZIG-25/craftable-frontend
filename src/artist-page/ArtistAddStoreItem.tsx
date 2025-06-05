@@ -16,10 +16,16 @@ import { ArtistTopBar } from '../top-bars/ArtistTopBar';
 import { Footer } from '../footers/Footer';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useApi } from '../api/ApiProvider';
 
 const AVAILABLE_TAGS = ['furniture', 'clay', 'glass', 'wood'];
 
 export default function ArtistAddStoreItem() {
+  const api = useApi();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [images, setImages] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -29,21 +35,36 @@ export default function ArtistAddStoreItem() {
     initialValues: {
       description: '',
       price: '',
+      title: '',
       images: [] as string[],
-      tags: [] as string[],
+      tags: [] as string[]
     },
     validationSchema: Yup.object({
       description: Yup.string().required('Description is required'),
+      title: Yup.string().required('Title is required'),
       price: Yup.number()
         .typeError('Price must be a number')
         .min(1, 'Price must be at least $1')
         .required('Price is required'),
       images: Yup.array().min(1, 'At least one image is required'),
-      tags: Yup.array().min(1, 'At least one tag is required'),
+      // tags: Yup.array().min(1, 'At least one tag is required')
     }),
     onSubmit: (values) => {
       console.log(values);
-    },
+      api.createNewStoreItem({
+        price: +values.price,
+        title: values.title,
+        description: values.description,
+        creatorId: {id: location.state?.id ?? -1},
+        itemPictureIds: values.images.map(img => {return {photoUrl: img}})
+      }).then(response => {
+        if (!response.success) {
+          alert(`Could not create offer: ${response.data}`)
+          return;
+        }
+        navigate(-1);
+      })
+    }
   });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +117,7 @@ export default function ArtistAddStoreItem() {
       <Box
         sx={{
           p: 5,
-          minHeight: '100vh',
+          minHeight: '100vh'
         }}
       >
         <Typography variant="h4" fontWeight="bold" padding={'1rem'}>
@@ -115,7 +136,7 @@ export default function ArtistAddStoreItem() {
                   display: 'flex',
                   gap: 2,
                   flexWrap: 'wrap',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}
               >
                 {images.map((src, index) => (
@@ -127,7 +148,7 @@ export default function ArtistAddStoreItem() {
                         width: '150px',
                         height: '150px',
                         objectFit: 'cover',
-                        borderRadius: '8px',
+                        borderRadius: '8px'
                       }}
                     />
                     <IconButton
@@ -137,7 +158,7 @@ export default function ArtistAddStoreItem() {
                         position: 'absolute',
                         top: -8,
                         right: -8,
-                        backgroundColor: 'white',
+                        backgroundColor: 'white'
                       }}
                     >
                       <RemoveCircleIcon fontSize="small" color="error" />
@@ -157,7 +178,7 @@ export default function ArtistAddStoreItem() {
                       alignItems: 'center',
                       cursor: 'pointer',
                       fontSize: '2rem',
-                      backgroundColor: '#eee',
+                      backgroundColor: '#eee'
                     }}
                   >
                     <AddIcon />
@@ -203,44 +224,58 @@ export default function ArtistAddStoreItem() {
                 border: '1px solid #ccc',
                 borderRadius: 3,
                 boxShadow: 2,
-                height: 'fit-content',
+                height: 'fit-content'
               }}
             >
-              <Typography variant="h6">Tags</Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                {tags.map((tag) => (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    onDelete={() => handleRemoveTag(tag)}
-                    sx={{ backgroundColor: 'turquoise', color: 'white' }}
-                  />
-                ))}
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={(e) => setAnchorEl(e.currentTarget)}
-                >
-                  Add +
-                </Button>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {AVAILABLE_TAGS.filter((tag) => !tags.includes(tag)).map(
-                    (tag) => (
-                      <MenuItem key={tag} onClick={() => handleAddTag(tag)}>
-                        {tag}
-                      </MenuItem>
-                    ),
-                  )}
-                </Menu>
-              </Box>
-              {formik.touched.tags && formik.errors.tags && (
-                <Alert severity="error">{formik.errors.tags}</Alert>
-              )}
+              {/*TODO: Temporary disabled due to lack of backend implementation*/}
+              {/*<Typography variant="h6">Tags</Typography>*/}
+              {/*<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>*/}
+              {/*  {tags.map((tag) => (*/}
+              {/*    <Chip*/}
+              {/*      key={tag}*/}
+              {/*      label={tag}*/}
+              {/*      onDelete={() => handleRemoveTag(tag)}*/}
+              {/*      sx={{ backgroundColor: 'turquoise', color: 'white' }}*/}
+              {/*    />*/}
+              {/*  ))}*/}
+              {/*  <Button*/}
+              {/*    variant="outlined"*/}
+              {/*    size="small"*/}
+              {/*    onClick={(e) => setAnchorEl(e.currentTarget)}*/}
+              {/*  >*/}
+              {/*    Add +*/}
+              {/*  </Button>*/}
+              {/*  <Menu*/}
+              {/*    anchorEl={anchorEl}*/}
+              {/*    open={Boolean(anchorEl)}*/}
+              {/*    onClose={() => setAnchorEl(null)}*/}
+              {/*  >*/}
+              {/*    {AVAILABLE_TAGS.filter((tag) => !tags.includes(tag)).map(*/}
+              {/*      (tag) => (*/}
+              {/*        <MenuItem key={tag} onClick={() => handleAddTag(tag)}>*/}
+              {/*          {tag}*/}
+              {/*        </MenuItem>*/}
+              {/*      )*/}
+              {/*    )}*/}
+              {/*  </Menu>*/}
+              {/*</Box>*/}
+              {/*{formik.touched.tags && formik.errors.tags && (*/}
+              {/*  <Alert severity="error">{formik.errors.tags}</Alert>*/}
+              {/*)}*/}
+              <Typography variant="h6">Title</Typography>
+              <TextField
+                name="title"
+                value={formik.values.title}
+                variant="outlined"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                fullWidth
+                sx={{ my: 2, borderRadius: '28px' }}
 
+              />
+              {formik.touched.title && formik.errors.title && (
+                <Alert severity="error">{formik.errors.title}</Alert>
+              )}
               <Typography variant="h6">Price</Typography>
               <TextField
                 name="price"
@@ -255,8 +290,8 @@ export default function ArtistAddStoreItem() {
                     fontSize: '2rem',
                     textAlign: 'center',
                     px: 2,
-                    borderRadius: 5,
-                  },
+                    borderRadius: 5
+                  }
                 }}
               />
               {formik.touched.price && formik.errors.price && (
@@ -278,4 +313,4 @@ export default function ArtistAddStoreItem() {
       <Footer />
     </>
   );
-}
+};
