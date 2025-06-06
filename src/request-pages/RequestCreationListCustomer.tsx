@@ -14,64 +14,14 @@ import {
   MenuItem,
   Slider,
   Grid,
-  Container,
+  Container, Toolbar
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { CreationRequest } from '../models/CreationRequest';
 import { Footer } from '../footers/Footer';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { useNavigate } from 'react-router-dom';
-
-
-const mockRequests: CreationRequest[] = [
-  {
-    title: 'Portrait Painting',
-    description: 'Custom oil portrait',
-    price: 500,
-    customerId: {
-      name: 'John',
-      surname: 'Doe',
-      login: 'John Doe',
-      bio: '',
-      password: '',
-      email: '',
-    },
-    creatorId: {
-      name: 'Jane',
-      surname: 'Smith',
-      login: 'Jane Smith',
-      bio: '',
-      email: '',
-      professions: [],
-      phoneNumber: '',
-    },
-    status: 'pending',
-  },
-  {
-    title: 'Digital Illustration',
-    description: 'Fantasy character design',
-    price: 300,
-    customerId: {
-      name: 'Alice',
-      surname: 'Johnson',
-      login: 'Alice Johnson',
-      bio: '',
-      password: '',
-      email: '',
-    },
-    creatorId: {
-      name: 'Bob',
-      surname: 'Wilson',
-      login: 'Bob Wilson',
-      bio: '',
-      email: '',
-      professions: [],
-      phoneNumber: '0',
-    },
-    status: 'awaiting acceptation',
-  },
-  
-];
+import { useApi } from '../api/ApiProvider';
 
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -92,6 +42,8 @@ const FilterBox = styled(Box)(({ theme }) => ({
 }));
 
 const CreationRequestsListCustomer: React.FC = () => {
+  const [requests, setRequests] = useState<CreationRequest[]>([]);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | ''>('');
   const [minPriceInput, setMinPriceInput] = useState<string>('');
@@ -100,10 +52,20 @@ const CreationRequestsListCustomer: React.FC = () => {
   const [initialPriceRange, setInitialPriceRange] = useState<number[]>([0, 1000]);
 
   const navigate = useNavigate();
+  const api = useApi();
 
+  useEffect(() => {
+    api.getUserSigned().then(response => {
+      if (!response.success || !response.data) {
+        console.error(response);
+        return;
+      }
+      setRequests(response.data.requests ?? [])
+    })
+  }, [api]);
   
   useEffect(() => {
-    const prices = mockRequests
+    const prices = requests
       .filter((request) => request.price !== undefined)
       .map((request) => request.price!);
     const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
@@ -113,7 +75,7 @@ const CreationRequestsListCustomer: React.FC = () => {
     setMaxPriceInput(maxPrice.toString());
     setPriceRange([minPrice, maxPrice]);
     setInitialPriceRange([minPrice, maxPrice]);
-  }, []);
+  }, [requests]);
 
   
   const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,7 +97,7 @@ const CreationRequestsListCustomer: React.FC = () => {
   };
 
   
-  const filteredRequests = mockRequests.filter((request) => {
+  const filteredRequests = requests.filter((request) => {
     const matchesSearch =
       request.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.creatorId?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -158,6 +120,7 @@ const CreationRequestsListCustomer: React.FC = () => {
   return (
     <>
       <CustomerTopBar />
+      <Toolbar/>
       <Container maxWidth="lg" className="py-8" sx={{ height: '100vh' }}>
         <Box sx={{ mb: 4 }}>
           <TextField
@@ -280,7 +243,7 @@ const CreationRequestsListCustomer: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
-      <Footer />
+      {/*<Footer />*/}
     </>
   );
 };

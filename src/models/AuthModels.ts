@@ -22,15 +22,15 @@ export class AdditionalArtistData {
   lastName: string | undefined;
   phoneNumber: string | undefined;
   professions = [
-    { professionName: 'Mixed Media', active: false },
-    { professionName: 'Painters & illustrators', active: false },
-    { professionName: 'Ceramic', active: false },
-    { professionName: 'Fiber', active: false },
-    { professionName: 'Jewelery', active: false },
-    { professionName: 'Leather-worker', active: false },
-    { professionName: 'Soap & Candle', active: false },
-    { professionName: 'Woodworker', active: false },
-    { professionName: 'Doll & miniature', active: false },
+    { professionName: 'Painters & Illustrators', active: false },
+    { professionName: 'Ceramic artists', active: false },
+    { professionName: 'Fiber artists', active: false },
+    { professionName: 'Jewelery makers', active: false },
+    { professionName: 'Leatherworkers', active: false },
+    { professionName: 'Soap & Candle artists', active: false },
+    { professionName: 'Woodworkers', active: false },
+    { professionName: 'Mixed media', active: false },
+    { professionName: 'Doll & Miniature artists', active: false },
     { professionName: 'Other', active: false },
   ];
 }

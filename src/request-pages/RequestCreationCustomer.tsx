@@ -1,10 +1,10 @@
-import React from 'react';
-import { Box, Button, Paper, Typography, styled } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Paper, Typography, styled, Toolbar } from '@mui/material';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { Footer } from '../footers/Footer';
 import { useLocation } from 'react-router-dom';
 import { CreationRequest } from '../models/CreationRequest';
-
+import { useApi } from '../api/ApiProvider';
 
 const DetailRow = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(2),
@@ -19,8 +19,12 @@ const DetailRow = styled(Box)(({ theme }) => ({
 
 const RequestCreationCustomer: React.FC = () => {
   const location = useLocation();
+  const api = useApi();
 
-  const data: CreationRequest | null = location.state?.request?? null;
+  const [data, setData] = useState<CreationRequest | null>(
+    location.state?.request ?? null,
+  );
+
   const title = data?.title ?? 'Unknown';
   const description = data?.description ?? 'Unknown';
   const artistName = data?.creatorId?.login ?? 'Unknown';
@@ -30,9 +34,31 @@ const RequestCreationCustomer: React.FC = () => {
 
   const handleButtonClick = () => {
     if (status === 'awaiting acceptation') {
-      console.log('Cancel action triggered');
-    } else if (status === 'pending') {
-      console.log('Accept action triggered');
+      if (!data) {
+        return;
+      }
+      data.status = 'cancelled';
+      api.updateRequest(data).then((response) => {
+        if (!response.success) {
+          console.error(response);
+          return;
+        }
+
+        setData(response.data);
+      });
+    } else if (status === 'marked as done') {
+      if (!data) {
+        return;
+      }
+      data.status = 'done';
+      api.updateRequest(data).then((response) => {
+        if (!response.success) {
+          console.error(response);
+          return;
+        }
+
+        setData(response.data);
+      });
     }
   };
 

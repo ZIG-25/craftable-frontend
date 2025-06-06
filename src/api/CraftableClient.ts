@@ -11,10 +11,11 @@ import {
 } from '../models/ApiResponse';
 import { loginDestination, Role } from '../models/Role';
 import { JwtHandler } from './JwtHandler';
-import { Artist } from '../models/Artist';
+import { Artist, PortfolioItem } from '../models/Artist';
 import { StoreItem } from '../models/Store';
 import { Order } from '../models/Order';
 import { CreationRequest } from '../models/CreationRequest';
+import { Customer } from '../models/Customer';
 
 export class CraftableClient {
   private client: AxiosInstance;
@@ -166,6 +167,31 @@ export class CraftableClient {
     };
   }
 
+  public async getUserSigned(): Promise<ClientResponse<Customer | null>> {
+    let response: AxiosResponse<Customer | any>;
+    try {
+      console.log(this.tokenHandler.getToken());
+      response = await this.client.get(`/user/self`, {
+        headers: { Authorization: `Bearer ${this.tokenHandler.getToken()}` },
+      });
+    } catch (err) {
+      console.log(err);
+
+      const error = err as AxiosError<Error>;
+      return {
+        success: false,
+        data: null,
+        statusCode: error.response?.status || 500,
+      };
+    }
+
+    return {
+      success: true,
+      data: response.data,
+      statusCode: response.status,
+    };
+  }
+
   public async createNewStoreItem(
     item: StoreItem,
   ): Promise<ClientResponse<string>> {
@@ -269,6 +295,79 @@ export class CraftableClient {
     let response: AxiosResponse<CreationRequest | null>;
     try {
       response = await this.client.post(`/request-new-creation`, request, {
+        headers: {
+          Authorization: `Bearer ${this.tokenHandler.getToken()}`
+        }
+      });
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+      return {
+        success: false,
+        data: null,
+        statusCode: error.response?.status || 500,
+      };
+    }
+
+    return {
+      success: true,
+      data: response.data,
+      statusCode: response.status,
+    };
+  }
+
+  public async createPortfolio(portfolioItem: PortfolioItem) : Promise<ClientResponse<PortfolioItem | null>> {
+    let response: AxiosResponse<PortfolioItem | null>;
+    try {
+      response = await this.client.post(`/portfolio-items`, portfolioItem, {
+        headers: {
+          Authorization: `Bearer ${this.tokenHandler.getToken()}`
+        }
+      });
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+      return {
+        success: false,
+        data: null,
+        statusCode: error.response?.status || 500,
+      };
+    }
+
+    return {
+      success: true,
+      data: response.data,
+      statusCode: response.status,
+    };
+  }
+
+
+  public async updateRequest(request: CreationRequest) : Promise<ClientResponse<CreationRequest | null>> {
+    let response: AxiosResponse<CreationRequest | null>;
+    try {
+      response = await this.client.post(`/request-new-creation/update`, request, {
+        headers: {
+          Authorization: `Bearer ${this.tokenHandler.getToken()}`
+        }
+      });
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+      return {
+        success: false,
+        data: null,
+        statusCode: error.response?.status || 500,
+      };
+    }
+
+    return {
+      success: true,
+      data: response.data,
+      statusCode: response.status,
+    };
+  }
+
+  public async updateArtist(artist: Artist) :  Promise<ClientResponse<Artist | null>> {
+    let response: AxiosResponse<Artist | null>;
+    try {
+      response = await this.client.post(`/creator/update`, artist, {
         headers: {
           Authorization: `Bearer ${this.tokenHandler.getToken()}`
         }

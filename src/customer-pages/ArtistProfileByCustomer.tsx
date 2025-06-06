@@ -33,6 +33,7 @@ const ArtistProfileByCustomer = () => {
       if (!response.success) {
         return;
       }
+      console.log(response.data)
       setArtist(response.data);
     });
   }, [api, location.state?.id]);
@@ -132,6 +133,7 @@ const ArtistProfileByCustomer = () => {
                         (item: PortfolioItem) => (
                           <Box
                             key={item.id}
+                            onClick={() => navigate('/portfolio-item-details', {state: {item: item}})}
                             sx={{
                               flex: '0 0 auto',
                               width: 300,
@@ -145,8 +147,7 @@ const ArtistProfileByCustomer = () => {
                                 component="img"
                                 height="300"
                                 image={
-                                  item.images[0] ||
-                                  'https://via.placeholder.com/300'
+                                  item.photoUrl
                                 }
                                 alt={item.title}
                                 sx={{ objectFit: 'cover' }}

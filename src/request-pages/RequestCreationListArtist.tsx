@@ -22,11 +22,7 @@ import { Footer } from '../footers/Footer';
 import CustomerTopBar from '../top-bars/customer-top-bar/CustomerTopBar';
 import { useNavigate } from 'react-router-dom';
 import { ArtistTopBar } from '../top-bars/ArtistTopBar';
-
-
-const mockRequests: CreationRequest[] = [
-
-];
+import { useApi } from '../api/ApiProvider';
 
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -47,15 +43,28 @@ const FilterBox = styled(Box)(({ theme }) => ({
 }));
 
 const CreationRequestsListArtist: React.FC = () => {
+  const [requests, setRequests] = useState<CreationRequest[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | ''>('');
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
   const [initialPriceRange, setInitialPriceRange] = useState<number[]>([0, 1000]);
 
   const navigate = useNavigate();
+  const api = useApi();
+
 
   useEffect(() => {
-    const prices = mockRequests
+    api.getArtistSigned().then(response => {
+      if (!response.success || !response.data) {
+        console.error(response);
+        return;
+      }
+      setRequests(response.data.requests ?? [])
+    })
+  }, [api]);
+
+  useEffect(() => {
+    const prices = requests
       .filter((request) => request.price !== undefined)
       .map((request) => request.price!);
     const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
@@ -63,10 +72,10 @@ const CreationRequestsListArtist: React.FC = () => {
 
     setPriceRange([minPrice, maxPrice]);
     setInitialPriceRange([minPrice, maxPrice]);
-  }, []);
+  }, [requests]);
 
   
-  const filteredRequests = mockRequests.filter((request) => {
+  const filteredRequests = requests.filter((request) => {
     const matchesSearch =
       request.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       request.customerId?.name
@@ -197,7 +206,7 @@ const CreationRequestsListArtist: React.FC = () => {
 
         </Grid>
       </Container>
-      <Footer />
+      {/*<Footer />*/}
     </>
   );
 };

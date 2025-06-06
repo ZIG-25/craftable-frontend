@@ -13,22 +13,40 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ArtistTopBar } from '../top-bars/ArtistTopBar';
 import { Footer } from '../footers/Footer';
+import { useApi } from '../api/ApiProvider';
+import { useNavigate } from 'react-router-dom';
 
 export default function ArtistAddPortfolioItem() {
   const [image, setImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const api = useApi();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       description: '',
+      title: '',
       image: '' as string,
     },
     validationSchema: Yup.object({
       description: Yup.string().required('Description is required'),
+      title: Yup.string().required('Title is required'),
       image: Yup.string().required('Image is required'),
     }),
     onSubmit: (values) => {
       console.log('Portfolio item saved:', values);
+      api.createPortfolio({
+        title: values.title,
+        description: values.description,
+        photoUrl: values.image
+      }).then((response) => {
+        if (!response.success) {
+          console.error(response);
+          return;
+        }
+        navigate(-1);
+      })
     },
   });
 
@@ -152,6 +170,28 @@ export default function ArtistAddPortfolioItem() {
 
               {/* Description */}
               <Box sx={{ flex: 2 }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                  Title
+                </Typography>
+                <TextField
+                  multiline
+                  fullWidth
+                  name="title"
+                  value={formik.values.title}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="Title of your item"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                    },
+                  }}
+                />
+                {formik.touched.title && formik.errors.title && (
+                  <Alert severity="error" sx={{ mt: 2 }}>
+                    {formik.errors.title}
+                  </Alert>
+                )}
                 <Typography variant="h6" sx={{ mb: 1 }}>
                   Provide description
                 </Typography>

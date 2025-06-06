@@ -48,7 +48,7 @@ export function ArtistTopBar() {
       icon: <LogoutIcon sx={{ fontSize: '2.2rem' }} />,
       label: 'logout',
       action: () => {
-        console.log('Logout artist');
+        navigate('/');
       },
     },
   ];

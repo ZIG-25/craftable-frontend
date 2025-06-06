@@ -57,7 +57,7 @@ function CustomerTopBar() {
       icon: <LogoutIcon sx={{ fontSize: '2.2rem' }} />,
       label: 'logout',
       action: () => {
-        console.log('logout');
+        navigate('/');
       },
       sx: {},
     },

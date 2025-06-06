@@ -23,6 +23,7 @@ import CreationRequestPageCustomer from './request-pages/RequestCreationCustomer
 import CreationRequestPageArtist from './request-pages/RequestCreationArtist';
 import CreationRequestsListCustomer from './request-pages/RequestCreationListCustomer';
 import CreationRequestsListArtist from './request-pages/RequestCreationListArtist';
+import PortfolioItemDetails from './artist-page/PortfolioItemDetails';
 
 
 // let theme = createTheme({
@@ -104,6 +105,7 @@ function App() {
             <Route path="/artists" element={<ArtistList />} />
             <Route path="/store-item" element={<StoreItemDetails />} />
             <Route path='/artist-profile-details' element={<ArtistProfileByCustomer />} />
+            <Route path='/portfolio-item-details' element={<PortfolioItemDetails />} />
             <Route path="/profile-artist" element={<ProfileArtistPage />}/>
             <Route path="/add-store-item" element={<ArtistAddStoreItem />}/>
             <Route path="/add-portfolio-item" element={<ArtistAddPortfolioItem />}/>

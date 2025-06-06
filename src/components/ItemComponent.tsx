@@ -41,11 +41,11 @@ interface ArtistStoreItemProps {
   description: string;
 }
 
-export function ItemComponent({request}: {request: CreationRequest}) {
+export function ItemComponent({request, onClick}: {request: CreationRequest, onClick: () => void}) {
   return (
     <Box className="item-container">
 
-      <Box className="item-info">
+      <Box className="item-info" onClick={onClick}>
         <Typography className="item-user">From {request.customerId?.name}</Typography>
         <Typography className="item-title">{request.title}</Typography>
         <Typography className="item-price">{request.price}</Typography>
@@ -70,7 +70,7 @@ export function OrderHistoryComponent({ order }: { order: Order }) {
           Bought: {order.date?.toString()}
         </Typography>
         <Typography className="item-price">
-          {order.itemForSaleId?.price}
+          {order.itemForSaleId?.price} $
         </Typography>
       </Box>
       <Typography className="item-state">{order.status}</Typography>

@@ -11,6 +11,7 @@ export const ALL_PROFESSIONS = [
   'Woodworkers',
   'Mixed media',
   'Doll & Miniature artists',
+  'Other'
 ];
 
 export class Artist {
@@ -19,7 +20,7 @@ export class Artist {
   name?: string | undefined;
   surname?: string | undefined;
   email?: string | undefined;
-  phoneNumber?: string | undefined;
+  phoneNumber?: string | undefined | number;
   bio?: string | undefined;
   portfolioItems?: PortfolioItem[] = [];
   storeItems?: StoreItem[] = [];
@@ -30,9 +31,9 @@ export class Artist {
 }
 
 export class PortfolioItem {
-  id: number | undefined;
+  id?: number | undefined;
   title: string | undefined;
   description: string | undefined;
-  images: string = '';
+  photoUrl: string = '';
 }
 

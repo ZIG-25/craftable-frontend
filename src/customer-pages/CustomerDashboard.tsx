@@ -108,7 +108,9 @@ function CustomerDashboard() {
                 title: e.title ?? '',
                 price: e.price + '$',
                 onClick: () => {
-                  console.log(e);},
+                  console.log(e);
+                  navigate('/store-item', { state: { item: e } })
+                  },
               }),
             )}
           />
@@ -175,7 +177,10 @@ function CustomerDashboard() {
                 title: e.title ?? '',
                 price: e.price + '$',
                 onClick: () => {
-                  console.log(e);},
+                  console.log(e);
+                  navigate('/store-item', { state: { item: e } })
+
+                  },
               }),
             )}
           />
@@ -283,7 +288,7 @@ function CustomerDashboard() {
           />
         </Paper>
       </Box>
-      <Footer />
+      {/*<Footer />*/}
     </>
   );
 }

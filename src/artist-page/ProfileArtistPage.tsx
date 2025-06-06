@@ -39,7 +39,7 @@ export default function ProfileArtistPage() {
   const [alertOpen, setAlertOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   // regex expression for validating phone number
-  const phoneRegExp = /^\d{3}\s\d{3}\s\d{3}/;
+  const phoneRegExp = /^\d{3}\d{3}\d{3}/;
 
   useEffect(() => {
 
@@ -68,8 +68,20 @@ export default function ProfileArtistPage() {
     }),
     onSubmit: (values) => {
       console.log('Saved', values);
-      setAlertMessage('Changes saved successfully!');
-      setAlertOpen(true);
+      if (!artist) { return; }
+      artist.bio = values.description;
+      artist.professions = selected;
+      artist.phoneNumber = parseInt(values.phoneNumber.toString());
+      console.log(artist)
+      api.updateArtist(artist).then((response) => {
+        if (!response.success) {
+          console.error(response);
+          return;
+        }
+        setArtist(response.data)
+        setAlertMessage('Changes saved successfully!');
+        setAlertOpen(true);
+      })
     },
   });
 
@@ -272,12 +284,12 @@ export default function ProfileArtistPage() {
                   <Card>
                     <CardMedia
                       component="img"
-                      image={item.images}
+                      image={item.photoUrl}
                       height="140"
                     />
                     <CardContent>
                       <Typography variant="body2">
-                        {item?.description}
+                        {item?.title}
                       </Typography>
                     </CardContent>
                   </Card>
